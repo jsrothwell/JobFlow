@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobFlow - Feature Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: linear-gradient(135deg, #0F1117 0%, #1E212B 100%);
+            color: white;
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #007AFF, #00C7FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 48px;
+        }
+
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge {
+            background: rgba(0, 122, 255, 0.15);
+            color: #007AFF;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(58, 64, 79, 0.3) 0%, rgba(58, 64, 79, 0.15) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 122, 255, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        .view-showcase {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .view-card {
+            background: linear-gradient(135deg, rgba(58, 64, 79, 0.4) 0%, rgba(58, 64, 79, 0.2) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .view-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #007AFF;
+        }
+
+        .view-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .view-card ul {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+
+        .view-card li {
+            padding: 8px 0;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+        }
+
+        .view-card li:before {
+            content: "✓ ";
+            color: #34C759;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .status-demo {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-applied {
+            background: rgba(52, 199, 89, 0.15);
+            color: #34C759;
+        }
+
+        .status-interviewing {
+            background: rgba(0, 122, 255, 0.15);
+            color: #007AFF;
+        }
+
+        .status-offer {
+            background: rgba(255, 149, 0, 0.15);
+            color: #FF9500;
+        }
+
+        .status-rejected {
+            background: rgba(255, 59, 48, 0.15);
+            color: #FF3B30;
+        }
+
+        .status-accepted {
+            background: rgba(88, 86, 214, 0.15);
+            color: #5856D6;
+        }
+
+        .cta {
+            background: linear-gradient(135deg, #007AFF, #0051D5);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 48px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .cta:hover {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .view-showcase {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JobFlow</h1>
+        <p class="subtitle">A beautiful, fully-functional macOS job tracking application</p>
+
+        <div class="section">
+            <h2 class="section-title">
+                Core Features
+                <span class="badge">All Implemented ✓</span>
+            </h2>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">➕</div>
+                    <div class="feature-title">Add Jobs</div>
+                    <div class="feature-desc">Click the + button to add new job applications with comprehensive details including title, company, status, salary, and notes.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">✏️</div>
+                    <div class="feature-title">Edit Jobs</div>
+                    <div class="feature-desc">Right-click any job or use the Edit button to modify application details at any time.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🗑️</div>
+                    <div class="feature-title">Delete Jobs</div>
+                    <div class="feature-desc">Remove applications via context menu or detail view delete button.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-title">Update Status</div>
+                    <div class="feature-desc">Quick status updates through dropdown menus in detail view or Kanban board.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <div class="feature-title">Search & Filter</div>
+                    <div class="feature-desc">Real-time search by job title or company name to quickly find applications.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Multiple Views</div>
+                    <div class="feature-desc">Switch between List, Timeline, and Kanban views for different perspectives on your applications.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Application Status Types</h2>
+            <div class="status-demo">
+                <div class="status-badge status-applied">Applied</div>
+                <div class="status-badge status-interviewing">Interviewing</div>
+                <div class="status-badge status-offer">Offer</div>
+                <div class="status-badge status-rejected">Rejected</div>
+                <div class="status-badge status-accepted">Accepted</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Three Powerful Views</h2>
+            
+            <div class="view-showcase">
+                <div class="view-card">
+                    <h3>📋 List View</h3>
+                    <p>Traditional list with detailed information panel</p>
+                    <ul>
+                        <li>Full job details displayed</li>
+                        <li>Description and notes visible</li>
+                        <li>Quick action buttons</li>
+                        <li>Best for detailed review</li>
+                    </ul>
+                </div>
+
+                <div class="view-card">
+                    <h3>📅 Timeline View</h3>
+                    <p>Chronological visualization of applications</p>
+                    <ul>
+                        <li>Visual timeline with dates</li>
+                        <li>Color-coded status dots</li>
+                        <li>See application progression</li>
+                        <li>Best for progress tracking</li>
+                    </ul>
+                </div>
+
+                <div class="view-card">
+                    <h3>📊 Kanban View</h3>
+                    <p>Status-based board organization</p>
+                    <ul>
+                        <li>Column per status type</li>
+                        <li>Compact card design</li>
+                        <li>Quick status changes</li>
+                        <li>Best for status management</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Design Highlights</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <div class="feature-title">Native macOS Design</div>
+                    <div class="feature-desc">Standard window controls, SF Pro typography, and authentic macOS aesthetics throughout.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌙</div>
+                    <div class="feature-title">Dark Theme</div>
+                    <div class="feature-desc">Sophisticated dark color palette with high contrast text for excellent readability.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <div class="feature-title">Liquid Glass UI</div>
+                    <div class="feature-desc">Subtle frosted glass effects create visual depth without sacrificing clarity.</div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <div class="feature-title">Smooth Animations</div>
+                    <div class="feature-desc">Native SwiftUI transitions provide polished, responsive interactions.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta">
+            Download JobFlow-Complete.zip and open in Xcode to start building!
+        </div>
+    </div>
+</body>
+</html>
