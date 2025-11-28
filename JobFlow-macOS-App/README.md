@@ -14,11 +14,13 @@ A beautiful, native macOS application for tracking job applications built with S
 - 📊 Multiple view modes:
   - **List View**: Traditional list with detailed job information
   - **Timeline View**: Chronological timeline of all applications
-  - **Kanban Board**: Drag-and-drop board organized by status
+  - **Kanban Board**: Drag-and-drop board organized by status columns
+- 🖱️ **Drag & Drop**: Move applications between status columns in Kanban view
 - ✨ Smooth animations and transitions
 - 💼 Track application status, salary, location, description, and notes
 - 🎯 Context menus for quick actions
 - 📅 Date tracking for each application
+- 🏷️ Navigation titles when sidebar is minimized
 
 ## Requirements
 
@@ -120,6 +122,14 @@ Use the view tabs in the sidebar header:
 - **List**: Traditional list view with detailed information panel
 - **Timeline**: Chronological timeline of all applications
 - **Kanban**: Status-based board with cards
+
+### Using Drag & Drop (Kanban View)
+
+1. Switch to Kanban view
+2. Click and drag any job card
+3. Drop it into a different status column
+4. The application status updates automatically
+5. Watch the smooth animation as the card moves
 
 ## Customization
 

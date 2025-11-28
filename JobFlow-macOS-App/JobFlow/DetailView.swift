@@ -258,6 +258,7 @@ struct DetailView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .navigationTitle("Application Details")
     }
 }
 

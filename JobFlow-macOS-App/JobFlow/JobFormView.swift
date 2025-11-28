@@ -79,12 +79,29 @@ struct JobFormView: View {
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundColor(Color.white.opacity(0.7))
                             
-                            Picker("Status", selection: $status) {
-                                ForEach(ApplicationStatus.allCases, id: \.self) { status in
-                                    Text(status.rawValue).tag(status)
+                            HStack(spacing: 4) {
+                                ForEach(ApplicationStatus.allCases, id: \.self) { statusOption in
+                                    Button(action: {
+                                        status = statusOption
+                                    }) {
+                                        Text(statusOption.rawValue)
+                                            .font(.system(size: 12, weight: .medium))
+                                            .foregroundColor(status == statusOption ? .white : Color.white.opacity(0.6))
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.vertical, 6)
+                                            .background(
+                                                status == statusOption
+                                                    ? statusOption.color
+                                                    : Color.white.opacity(0.05)
+                                            )
+                                            .cornerRadius(6)
+                                    }
+                                    .buttonStyle(.plain)
                                 }
                             }
-                            .pickerStyle(.segmented)
+                            .padding(4)
+                            .background(Color.black.opacity(0.2))
+                            .cornerRadius(8)
                         }
                         
                         VStack(alignment: .leading, spacing: 8) {
@@ -95,6 +112,8 @@ struct JobFormView: View {
                             DatePicker("", selection: $dateApplied, displayedComponents: .date)
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
+                                .colorScheme(.dark)
+                                .accentColor(Color(red: 0.0, green: 0.48, blue: 1.0))
                         }
                     }
                     
@@ -108,18 +127,29 @@ struct JobFormView: View {
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundColor(Color.white.opacity(0.7))
                             
-                            TextEditor(text: $description)
-                                .font(.system(size: 14))
-                                .foregroundColor(.white)
-                                .frame(height: 100)
-                                .padding(12)
-                                .background(Color.black.opacity(0.2))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
-                                )
-                                .cornerRadius(8)
-                                .scrollContentBackground(.hidden)
+                            ZStack(alignment: .topLeading) {
+                                if description.isEmpty {
+                                    Text("Describe the role, responsibilities, requirements...")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(Color.white.opacity(0.3))
+                                        .padding(.horizontal, 16)
+                                        .padding(.vertical, 16)
+                                }
+                                
+                                TextEditor(text: $description)
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.white)
+                                    .frame(height: 100)
+                                    .padding(8)
+                                    .scrollContentBackground(.hidden)
+                                    .background(Color.clear)
+                            }
+                            .background(Color.black.opacity(0.2))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                            )
+                            .cornerRadius(8)
                         }
                         
                         VStack(alignment: .leading, spacing: 8) {
@@ -127,18 +157,29 @@ struct JobFormView: View {
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundColor(Color.white.opacity(0.7))
                             
-                            TextEditor(text: $notes)
-                                .font(.system(size: 14))
-                                .foregroundColor(.white)
-                                .frame(height: 100)
-                                .padding(12)
-                                .background(Color.black.opacity(0.2))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
-                                )
-                                .cornerRadius(8)
-                                .scrollContentBackground(.hidden)
+                            ZStack(alignment: .topLeading) {
+                                if notes.isEmpty {
+                                    Text("Add personal notes, interview details, follow-ups...")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(Color.white.opacity(0.3))
+                                        .padding(.horizontal, 16)
+                                        .padding(.vertical, 16)
+                                }
+                                
+                                TextEditor(text: $notes)
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.white)
+                                    .frame(height: 100)
+                                    .padding(8)
+                                    .scrollContentBackground(.hidden)
+                                    .background(Color.clear)
+                            }
+                            .background(Color.black.opacity(0.2))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                            )
+                            .cornerRadius(8)
                         }
                     }
                 }
@@ -284,17 +325,26 @@ struct FormTextField: View {
                 .font(.system(size: 13, weight: .medium))
                 .foregroundColor(Color.white.opacity(0.7))
             
-            TextField(placeholder, text: $text)
-                .textFieldStyle(.plain)
-                .font(.system(size: 14))
-                .foregroundColor(.white)
-                .padding(12)
-                .background(Color.black.opacity(0.2))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
-                )
-                .cornerRadius(8)
+            ZStack(alignment: .leading) {
+                if text.isEmpty {
+                    Text(placeholder)
+                        .font(.system(size: 14))
+                        .foregroundColor(Color.white.opacity(0.4))
+                        .padding(.leading, 12)
+                }
+                
+                TextField("", text: $text)
+                    .textFieldStyle(.plain)
+                    .font(.system(size: 14))
+                    .foregroundColor(.white)
+                    .padding(12)
+            }
+            .background(Color.black.opacity(0.2))
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+            )
+            .cornerRadius(8)
         }
     }
 }

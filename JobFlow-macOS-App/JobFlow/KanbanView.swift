@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct KanbanView: View {
     @EnvironmentObject var jobStore: JobStore
@@ -27,6 +28,7 @@ struct KanbanColumn: View {
     @EnvironmentObject var jobStore: JobStore
     let status: ApplicationStatus
     let jobs: [JobApplication]
+    @State private var isTargeted = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -70,23 +72,32 @@ struct KanbanColumn: View {
             )
             .cornerRadius(10)
             
-            // Cards Container
+            // Cards Container with Drop Zone
             ScrollView {
                 VStack(spacing: 12) {
                     if jobs.isEmpty {
-                        // Empty State
+                        // Empty State with Drop Zone
                         VStack(spacing: 8) {
-                            Image(systemName: "tray")
+                            Image(systemName: isTargeted ? "tray.and.arrow.down.fill" : "tray")
                                 .font(.system(size: 32))
-                                .foregroundColor(Color.white.opacity(0.2))
-                                .padding(.top, 40)
+                                .foregroundColor(isTargeted ? status.color.opacity(0.6) : Color.white.opacity(0.2))
                             
-                            Text("No applications")
+                            Text(isTargeted ? "Drop here" : "No applications")
                                 .font(.system(size: 13))
-                                .foregroundColor(Color.white.opacity(0.4))
+                                .foregroundColor(isTargeted ? status.color.opacity(0.8) : Color.white.opacity(0.4))
                                 .padding(.bottom, 40)
                         }
                         .frame(maxWidth: .infinity)
+                        .frame(height: 150)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(isTargeted ? status.color.opacity(0.1) : Color.clear)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(isTargeted ? status.color.opacity(0.5) : Color.clear, lineWidth: 2)
+                                        .strokeBorder(style: StrokeStyle(lineWidth: 2, dash: isTargeted ? [5, 5] : []))
+                                )
+                        )
                     } else {
                         ForEach(jobs) { job in
                             KanbanCard(job: job)
@@ -102,6 +113,9 @@ struct KanbanColumn: View {
                 .padding(.vertical, 8)
             }
             .frame(height: 600)
+            .onDrop(of: [UTType.text], isTargeted: $isTargeted) { providers in
+                handleDrop(providers: providers)
+            }
         }
         .frame(width: 280)
         .padding(12)
@@ -117,9 +131,34 @@ struct KanbanColumn: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                .stroke(
+                    isTargeted ? status.color.opacity(0.5) : Color.white.opacity(0.08),
+                    lineWidth: isTargeted ? 2 : 1
+                )
         )
         .cornerRadius(12)
+        .animation(.easeInOut(duration: 0.2), value: isTargeted)
+    }
+    
+    private func handleDrop(providers: [NSItemProvider]) -> Bool {
+        guard let provider = providers.first else { return false }
+        
+        provider.loadItem(forTypeIdentifier: UTType.text.identifier, options: nil) { (data, error) in
+            guard let data = data as? Data,
+                  let jobId = String(data: data, encoding: .utf8),
+                  let uuid = UUID(uuidString: jobId),
+                  let job = jobStore.jobs.first(where: { $0.id == uuid }) else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    jobStore.updateJobStatus(job, newStatus: status)
+                }
+            }
+        }
+        
+        return true
     }
 }
 
@@ -127,7 +166,7 @@ struct KanbanCard: View {
     @EnvironmentObject var jobStore: JobStore
     let job: JobApplication
     @State private var isHovered = false
-    @State private var showingStatusMenu = false
+    @State private var isDragging = false
     
     var isSelected: Bool {
         jobStore.selectedJob?.id == job.id
@@ -148,13 +187,16 @@ struct KanbanCard: View {
                 Menu {
                     ForEach(ApplicationStatus.allCases, id: \.self) { status in
                         Button(action: {
-                            jobStore.updateJobStatus(job, newStatus: status)
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                jobStore.updateJobStatus(job, newStatus: status)
+                            }
                         }) {
                             HStack {
                                 Circle()
                                     .fill(status.color)
                                     .frame(width: 8, height: 8)
                                 Text(status.rawValue)
+                                    .foregroundColor(.white)
                             }
                         }
                     }
@@ -173,12 +215,11 @@ struct KanbanCard: View {
                         Label("Delete", systemImage: "trash")
                     }
                 } label: {
-                    Image(systemName: "ellipsis.circle")
+                    Image(systemName: "ellipsis.circle.fill")
                         .font(.system(size: 14))
-                        .foregroundColor(Color.white.opacity(0.4))
+                        .foregroundColor(Color.white.opacity(isHovered || isSelected ? 0.7 : 0.4))
                 }
                 .buttonStyle(.plain)
-                .opacity(isHovered || isSelected ? 1 : 0)
             }
             
             // Title
@@ -197,7 +238,7 @@ struct KanbanCard: View {
                         Text(job.location)
                             .font(.system(size: 11))
                     }
-                    .foregroundColor(Color.white.opacity(0.5))
+                    .foregroundColor(Color.white.opacity(0.6))
                 }
                 
                 if !job.salary.isEmpty {
@@ -207,7 +248,7 @@ struct KanbanCard: View {
                         Text(job.salary)
                             .font(.system(size: 11))
                     }
-                    .foregroundColor(Color.white.opacity(0.5))
+                    .foregroundColor(Color.white.opacity(0.6))
                 }
             }
             
@@ -215,14 +256,20 @@ struct KanbanCard: View {
             HStack {
                 Text(job.dateString)
                     .font(.system(size: 10))
-                    .foregroundColor(Color.white.opacity(0.4))
+                    .foregroundColor(Color.white.opacity(0.5))
                 
                 Spacer()
                 
-                if !job.notes.isEmpty {
-                    Image(systemName: "note.text")
+                HStack(spacing: 4) {
+                    if !job.notes.isEmpty {
+                        Image(systemName: "note.text")
+                            .font(.system(size: 10))
+                            .foregroundColor(Color.white.opacity(0.5))
+                    }
+                    
+                    Image(systemName: "hand.draw")
                         .font(.system(size: 10))
-                        .foregroundColor(Color.white.opacity(0.4))
+                        .foregroundColor(Color.white.opacity(isDragging ? 0.8 : (isHovered ? 0.5 : 0.3)))
                 }
             }
         }
@@ -273,11 +320,23 @@ struct KanbanCard: View {
             x: 0,
             y: 4
         )
-        .scaleEffect(isHovered ? 1.02 : 1.0)
+        .scaleEffect(isDragging ? 0.95 : (isHovered ? 1.02 : 1.0))
+        .opacity(isDragging ? 0.7 : 1.0)
         .animation(.easeInOut(duration: 0.2), value: isHovered)
         .animation(.easeInOut(duration: 0.2), value: isSelected)
+        .animation(.easeInOut(duration: 0.15), value: isDragging)
         .onHover { hovering in
             isHovered = hovering
+        }
+        .onDrag {
+            isDragging = true
+            
+            // Reset dragging state after a short delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isDragging = false
+            }
+            
+            return NSItemProvider(object: job.id.uuidString as NSString)
         }
     }
 }

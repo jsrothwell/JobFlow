@@ -95,13 +95,16 @@ struct SidebarView: View {
             ScrollView {
                 LazyVStack(spacing: 6) {
                     ForEach(jobStore.filteredJobs) { job in
-                        JobItemView(job: job, isSelected: jobStore.selectedJob?.id == job.id)
-                            .environmentObject(jobStore)
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    jobStore.selectedJob = job
-                                }
+                        JobItemView(
+                            jobStore: jobStore,
+                            job: job,
+                            isSelected: jobStore.selectedJob?.id == job.id
+                        )
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                jobStore.selectedJob = job
                             }
+                        }
                     }
                 }
                 .padding(12)
@@ -145,10 +148,9 @@ struct ViewTabButton: View {
 }
 
 struct JobItemView: View {
+    @ObservedObject var jobStore: JobStore
     let job: JobApplication
     let isSelected: Bool
-    
-    @EnvironmentObject var jobStore: JobStore
     
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {

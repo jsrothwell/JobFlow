@@ -26,6 +26,7 @@ struct TimelineView: View {
             }
             .padding(24)
         }
+        .navigationTitle("Application Timeline")
     }
 }
 
