@@ -15,10 +15,12 @@ struct JobFormView: View {
     @State private var location: String
     @State private var notes: String
     @State private var jobURL: String = ""
+    @State private var isGhostJob: Bool = false
     
     @StateObject private var urlParser = JobURLParser()
     @State private var showingURLImport = false
     @State private var isImporting = false
+    @State private var isImportingDetails = false
     
     init(job: JobApplication? = nil) {
         self.editingJob = job
@@ -30,6 +32,8 @@ struct JobFormView: View {
         _salary = State(initialValue: job?.salary ?? "")
         _location = State(initialValue: job?.location ?? "")
         _notes = State(initialValue: job?.notes ?? "")
+        _jobURL = State(initialValue: job?.url ?? "")
+        _isGhostJob = State(initialValue: job?.isGhostJob ?? false)
     }
     
     var isValid: Bool {
@@ -154,6 +158,41 @@ struct JobFormView: View {
                                 .labelsHidden()
                                 .colorScheme(.dark)
                                 .accentColor(Color(red: 0.0, green: 0.48, blue: 1.0))
+                        }
+                        
+                        // Ghost Job Flag
+                        VStack(alignment: .leading, spacing: 12) {
+                            Toggle(isOn: $isGhostJob) {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "exclamationmark.triangle.fill")
+                                        .foregroundColor(.orange)
+                                        .font(.system(size: 14))
+                                    Text("Flag as Ghost Job")
+                                        .font(.system(size: 13, weight: .medium))
+                                        .foregroundColor(.white.opacity(0.9))
+                                }
+                            }
+                            .toggleStyle(.switch)
+                            .tint(.orange)
+                            
+                            if isGhostJob {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "info.circle.fill")
+                                        .foregroundColor(.blue)
+                                        .font(.system(size: 12))
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("This job will be reported to ghostjobs.io")
+                                            .font(.system(size: 11))
+                                            .foregroundColor(.white.opacity(0.7))
+                                        Text("Helps track fake/inactive job postings")
+                                            .font(.system(size: 10))
+                                            .foregroundColor(.white.opacity(0.5))
+                                    }
+                                }
+                                .padding(10)
+                                .background(Color.orange.opacity(0.15))
+                                .cornerRadius(6)
+                            }
                         }
                     }
                     
@@ -294,6 +333,18 @@ struct JobFormView: View {
             updatedJob.salary = salary
             updatedJob.location = location
             updatedJob.notes = notes
+            updatedJob.url = jobURL
+            updatedJob.isGhostJob = isGhostJob
+            
+            // Submit to ghostjobs.io if flagged
+            if isGhostJob {
+                Task {
+                    let success = await urlParser.submitGhostJob(updatedJob)
+                    if success {
+                        print("Ghost job reported to ghostjobs.io successfully")
+                    }
+                }
+            }
             
             jobStore.updateJob(updatedJob)
         } else {
@@ -306,13 +357,60 @@ struct JobFormView: View {
                 description: description,
                 salary: salary,
                 location: location,
-                notes: notes
+                notes: notes,
+                url: jobURL,
+                isGhostJob: isGhostJob
             )
+            
+            // Submit to ghostjobs.io if flagged
+            if isGhostJob {
+                Task {
+                    let success = await urlParser.submitGhostJob(newJob)
+                    if success {
+                        print("Ghost job reported to ghostjobs.io successfully")
+                    }
+                }
+            }
             
             jobStore.addJob(newJob)
         }
         
         dismiss()
+    }
+    
+    private func importDetailsFromURL() {
+        guard !jobURL.isEmpty else { return }
+        
+        isImportingDetails = true
+        
+        Task {
+            if let importedJob = await urlParser.importJobDetails(from: jobURL) {
+                await MainActor.run {
+                    // Update form fields with imported data
+                    if !importedJob.title.isEmpty {
+                        title = importedJob.title
+                    }
+                    if !importedJob.company.isEmpty && !importedJob.company.hasPrefix("From ") {
+                        company = importedJob.company
+                    }
+                    if !importedJob.description.isEmpty {
+                        description = importedJob.description
+                    }
+                    if !importedJob.location.isEmpty {
+                        location = importedJob.location
+                    }
+                    if !importedJob.salary.isEmpty {
+                        salary = importedJob.salary
+                    }
+                    
+                    isImportingDetails = false
+                }
+            } else {
+                await MainActor.run {
+                    isImportingDetails = false
+                }
+            }
+        }
     }
 }
 
@@ -450,31 +548,59 @@ struct URLImportSection: View {
                 )
                 .cornerRadius(8)
                 
-                Button(action: importFromURL) {
-                    HStack(spacing: 6) {
-                        if isImporting {
-                            ProgressView()
-                                .scaleEffect(0.7)
-                                .frame(width: 14, height: 14)
-                        } else {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.system(size: 14))
+                HStack(spacing: 12) {
+                    Button(action: importFromURL) {
+                        HStack(spacing: 6) {
+                            if isImporting {
+                                ProgressView()
+                                    .scaleEffect(0.7)
+                                    .frame(width: 14, height: 14)
+                            } else {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 14))
+                            }
+                            Text(isImporting ? "Saving..." : "Save URL")
+                                .font(.system(size: 13, weight: .medium))
                         }
-                        Text(isImporting ? "Saving..." : "Save URL")
-                            .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(
+                            jobURL.isEmpty || isImporting
+                                ? Color.white.opacity(0.1)
+                                : Color(red: 0.0, green: 0.48, blue: 1.0)
+                        )
+                        .cornerRadius(8)
                     }
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(
-                        jobURL.isEmpty || isImporting
-                            ? Color.white.opacity(0.1)
-                            : Color(red: 0.0, green: 0.48, blue: 1.0)
-                    )
-                    .cornerRadius(8)
+                    .buttonStyle(.plain)
+                    .disabled(jobURL.isEmpty || isImporting)
+                    
+                    Button(action: importDetailsFromURL) {
+                        HStack(spacing: 6) {
+                            if isImportingDetails {
+                                ProgressView()
+                                    .scaleEffect(0.7)
+                                    .frame(width: 14, height: 14)
+                            } else {
+                                Image(systemName: "arrow.down.circle.fill")
+                                    .font(.system(size: 14))
+                            }
+                            Text(isImportingDetails ? "Importing..." : "Import Details")
+                                .font(.system(size: 13, weight: .medium))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(
+                            jobURL.isEmpty || isImportingDetails
+                                ? Color.white.opacity(0.1)
+                                : Color.green
+                        )
+                        .cornerRadius(8)
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(jobURL.isEmpty || isImportingDetails)
                 }
-                .buttonStyle(.plain)
-                .disabled(jobURL.isEmpty || isImporting)
             }
             
             // Supported boards hint
