@@ -19,6 +19,8 @@
 		A10000013 /* JobURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000014 /* JobURLParser.swift */; };
 		A10000015 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000016 /* ThemeManager.swift */; };
 		A10000017 /* PathExplorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000018 /* PathExplorationView.swift */; };
+		A10000019 /* Interview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020 /* Interview.swift */; };
+		A10000021 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000022 /* Contact.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		A10000014 /* JobURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobURLParser.swift; sourceTree = "<group>"; };
 		A10000016 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		A10000018 /* PathExplorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathExplorationView.swift; sourceTree = "<group>"; };
+		A10000020 /* Interview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interview.swift; sourceTree = "<group>"; };
+		A10000022 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 				A10000000 /* JobFlowApp.swift */,
 				A10000002 /* ContentView.swift */,
 				A10000004 /* JobApplication.swift */,
+				A10000020 /* Interview.swift */,
+				A10000022 /* Contact.swift */,
 				A10000014 /* JobURLParser.swift */,
 				A10000016 /* ThemeManager.swift */,
 				A10000006 /* SidebarView.swift */,
@@ -157,6 +163,8 @@
 				A10000001 /* JobFlowApp.swift in Sources */,
 				A10000003 /* ContentView.swift in Sources */,
 				A10000005 /* JobApplication.swift in Sources */,
+				A10000019 /* Interview.swift in Sources */,
+				A10000021 /* Contact.swift in Sources */,
 				A10000013 /* JobURLParser.swift in Sources */,
 				A10000015 /* ThemeManager.swift in Sources */,
 				A10000007 /* SidebarView.swift in Sources */,

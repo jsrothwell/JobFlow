@@ -75,6 +75,8 @@ class JobStore: ObservableObject {
         )
     ]
     
+    @Published var contacts: [Contact] = []
+    
     @Published var selectedJob: JobApplication?
     @Published var selectedView: ViewType = .kanban // Changed to Kanban as default
     @Published var searchText: String = ""
@@ -92,7 +94,7 @@ class JobStore: ObservableObject {
         }
     }
     
-    // CRUD Operations
+    // CRUD Operations - Jobs
     func addJob(_ job: JobApplication) {
         jobs.append(job)
         selectedJob = job
@@ -115,6 +117,71 @@ class JobStore: ObservableObject {
     func updateJobStatus(_ job: JobApplication, newStatus: ApplicationStatus) {
         if let index = jobs.firstIndex(where: { $0.id == job.id }) {
             jobs[index].status = newStatus
+            selectedJob = jobs[index]
+        }
+    }
+    
+    // Interview Management
+    func addInterview(_ interview: Interview, to job: JobApplication) {
+        if let index = jobs.firstIndex(where: { $0.id == job.id }) {
+            jobs[index].interviews.append(interview)
+            selectedJob = jobs[index]
+        }
+    }
+    
+    func updateInterview(_ interview: Interview, in job: JobApplication) {
+        if let jobIndex = jobs.firstIndex(where: { $0.id == job.id }),
+           let interviewIndex = jobs[jobIndex].interviews.firstIndex(where: { $0.id == interview.id }) {
+            jobs[jobIndex].interviews[interviewIndex] = interview
+            selectedJob = jobs[jobIndex]
+        }
+    }
+    
+    func deleteInterview(_ interview: Interview, from job: JobApplication) {
+        if let jobIndex = jobs.firstIndex(where: { $0.id == job.id }) {
+            jobs[jobIndex].interviews.removeAll { $0.id == interview.id }
+            selectedJob = jobs[jobIndex]
+        }
+    }
+    
+    // Contact Management
+    func addContact(_ contact: Contact) {
+        contacts.append(contact)
+    }
+    
+    func updateContact(_ contact: Contact) {
+        if let index = contacts.firstIndex(where: { $0.id == contact.id }) {
+            contacts[index] = contact
+        }
+    }
+    
+    func deleteContact(_ contact: Contact) {
+        contacts.removeAll { $0.id == contact.id }
+        // Remove contact references from jobs
+        for (index, job) in jobs.enumerated() {
+            jobs[index].contactIDs.removeAll { $0 == contact.id }
+        }
+    }
+    
+    func getContact(byID id: UUID) -> Contact? {
+        contacts.first { $0.id == id }
+    }
+    
+    func getContacts(for job: JobApplication) -> [Contact] {
+        job.contactIDs.compactMap { getContact(byID: $0) }
+    }
+    
+    func linkContact(_ contact: Contact, to job: JobApplication) {
+        if let index = jobs.firstIndex(where: { $0.id == job.id }),
+           !jobs[index].contactIDs.contains(contact.id) {
+            jobs[index].contactIDs.append(contact.id)
+            selectedJob = jobs[index]
+        }
+    }
+    
+    func unlinkContact(_ contact: Contact, from job: JobApplication) {
+        if let index = jobs.firstIndex(where: { $0.id == job.id }) {
+            jobs[index].contactIDs.removeAll { $0 == contact.id }
             selectedJob = jobs[index]
         }
     }
