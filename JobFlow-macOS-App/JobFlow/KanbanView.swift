@@ -3,6 +3,7 @@ import UniformTypeIdentifiers
 
 struct KanbanView: View {
     @EnvironmentObject var jobStore: JobStore
+    @EnvironmentObject var themeManager: ThemeManager
     
     var jobsByStatus: [ApplicationStatus: [JobApplication]] {
         Dictionary(grouping: jobStore.filteredJobs, by: { $0.status })
@@ -20,12 +21,13 @@ struct KanbanView: View {
             }
             .padding(24)
         }
-        .background(Color(red: 0.12, green: 0.13, blue: 0.17))
+        .background(ThemeColors.backgroundDeep(for: themeManager.currentTheme))
     }
 }
 
 struct KanbanColumn: View {
     @EnvironmentObject var jobStore: JobStore
+    @EnvironmentObject var themeManager: ThemeManager
     let status: ApplicationStatus
     let jobs: [JobApplication]
     @State private var isTargeted = false
@@ -41,34 +43,25 @@ struct KanbanColumn: View {
                     
                     Text(status.rawValue)
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
                 }
                 
                 Spacer()
                 
                 Text("\(jobs.count)")
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(Color.white.opacity(0.5))
+                    .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
-                    .background(Color.white.opacity(0.1))
+                    .background(ThemeColors.borderSubtle(for: themeManager.currentTheme))
                     .cornerRadius(6)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
-            .background(
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.23, green: 0.25, blue: 0.31).opacity(0.4),
-                        Color(red: 0.23, green: 0.25, blue: 0.31).opacity(0.2)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+            .background(ThemeColors.glassBackground(for: themeManager.currentTheme))
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                    .stroke(ThemeColors.border(for: themeManager.currentTheme), lineWidth: 1)
             )
             .cornerRadius(10)
             
@@ -84,7 +77,7 @@ struct KanbanColumn: View {
                             
                             Text(isTargeted ? "Drop here" : "No applications")
                                 .font(.system(size: 13))
-                                .foregroundColor(isTargeted ? status.color.opacity(0.8) : Color.white.opacity(0.4))
+                                .foregroundColor(isTargeted ? status.color.opacity(0.8) : ThemeColors.textPlaceholder(for: themeManager.currentTheme))
                                 .padding(.bottom, 40)
                         }
                         .frame(maxWidth: .infinity)
@@ -123,16 +116,7 @@ struct KanbanColumn: View {
         }
         .frame(width: 280)
         .padding(12)
-        .background(
-            LinearGradient(
-                colors: [
-                    Color(red: 0.16, green: 0.18, blue: 0.22).opacity(0.3),
-                    Color(red: 0.12, green: 0.13, blue: 0.17).opacity(0.5)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .background(ThemeColors.panelBackground(for: themeManager.currentTheme))
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(
@@ -168,6 +152,7 @@ struct KanbanColumn: View {
 
 struct KanbanCard: View {
     @EnvironmentObject var jobStore: JobStore
+    @EnvironmentObject var themeManager: ThemeManager
     let job: JobApplication
     @State private var isHovered = false
     @State private var isDragging = false
@@ -182,7 +167,7 @@ struct KanbanCard: View {
             HStack {
                 Text(job.company)
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(Color.white.opacity(0.5))
+                    .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
                     .textCase(.uppercase)
                     .tracking(0.5)
                 
@@ -229,7 +214,7 @@ struct KanbanCard: View {
             // Title
             Text(job.title)
                 .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.white)
+                .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
                 .lineLimit(2)
                 .fixedSize(horizontal: false, vertical: true)
             
@@ -242,7 +227,7 @@ struct KanbanCard: View {
                         Text(job.location)
                             .font(.system(size: 11))
                     }
-                    .foregroundColor(Color.white.opacity(0.6))
+                    .foregroundColor(ThemeColors.textSecondary(for: themeManager.currentTheme))
                 }
                 
                 if !job.salary.isEmpty {
@@ -252,7 +237,7 @@ struct KanbanCard: View {
                         Text(job.salary)
                             .font(.system(size: 11))
                     }
-                    .foregroundColor(Color.white.opacity(0.6))
+                    .foregroundColor(ThemeColors.textSecondary(for: themeManager.currentTheme))
                 }
             }
             
@@ -260,7 +245,7 @@ struct KanbanCard: View {
             HStack {
                 Text(job.dateString)
                     .font(.system(size: 10))
-                    .foregroundColor(Color.white.opacity(0.5))
+                    .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
                 
                 Spacer()
                 
@@ -268,31 +253,25 @@ struct KanbanCard: View {
                     if !job.notes.isEmpty {
                         Image(systemName: "note.text")
                             .font(.system(size: 10))
-                            .foregroundColor(Color.white.opacity(0.5))
+                            .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
                     }
                     
                     Image(systemName: "hand.draw")
                         .font(.system(size: 10))
-                        .foregroundColor(Color.white.opacity(isDragging ? 0.8 : (isHovered ? 0.5 : 0.3)))
+                        .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme).opacity(isDragging ? 1 : (isHovered ? 0.7 : 0.5)))
                 }
             }
         }
         .padding(12)
         .background(
             ZStack {
-                LinearGradient(
-                    colors: isSelected
-                        ? [
-                            job.status.color.opacity(0.15),
-                            job.status.color.opacity(0.08)
-                        ]
-                        : [
-                            Color(red: 0.23, green: 0.25, blue: 0.31).opacity(0.4),
-                            Color(red: 0.23, green: 0.25, blue: 0.31).opacity(0.25)
-                        ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
+                if isSelected {
+                    // Selected state
+                    job.status.color.opacity(themeManager.currentTheme == .dark ? 0.12 : 0.08)
+                } else {
+                    // Normal state
+                    ThemeColors.cardBackground(for: themeManager.currentTheme)
+                }
                 
                 if isSelected {
                     VStack {
@@ -313,16 +292,16 @@ struct KanbanCard: View {
                 .stroke(
                     isSelected
                         ? job.status.color.opacity(0.4)
-                        : Color.white.opacity(isHovered ? 0.15 : 0.08),
+                        : ThemeColors.border(for: themeManager.currentTheme).opacity(isHovered ? 1.5 : 1.0),
                     lineWidth: 1
                 )
         )
         .cornerRadius(10)
         .shadow(
-            color: isSelected ? job.status.color.opacity(0.2) : Color.clear,
-            radius: 8,
+            color: isSelected ? job.status.color.opacity(0.2) : ThemeColors.cardShadow(for: themeManager.currentTheme),
+            radius: isSelected ? 8 : 4,
             x: 0,
-            y: 4
+            y: isSelected ? 4 : 2
         )
         .scaleEffect(isDragging ? 0.95 : (isHovered ? 1.02 : 1.0))
         .opacity(isDragging ? 0.7 : 1.0)

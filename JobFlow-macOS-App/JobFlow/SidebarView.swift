@@ -9,9 +9,22 @@ struct SidebarView: View {
             // Header
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
-                    Text("Applications")
-                        .font(.system(size: 22, weight: .bold, design: .rounded))
-                        .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
+                    // JobFlow branding with logo
+                    HStack(spacing: 10) {
+                        Image("JobFlowLogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 28, height: 28)
+                        
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("JobFlow")
+                                .font(.system(size: 20, weight: .bold, design: .rounded))
+                                .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
+                            Text("Applications")
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
+                        }
+                    }
                     
                     Spacer()
                     
@@ -53,24 +66,15 @@ struct SidebarView: View {
                     }
                 }
                 .padding(4)
-                .background(Color.black.opacity(0.2))
+                .background(ThemeColors.inputBackground(for: themeManager.currentTheme).opacity(themeManager.currentTheme == .dark ? 1 : 0.5))
                 .cornerRadius(8)
             }
             .padding(20)
             .padding(.bottom, 4)
-            .background(
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.16, green: 0.18, blue: 0.22).opacity(0.95),
-                        Color(red: 0.12, green: 0.13, blue: 0.17).opacity(0.6)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+            .background(ThemeColors.panelSecondary(for: themeManager.currentTheme))
             .overlay(
                 Rectangle()
-                    .fill(Color.white.opacity(0.06))
+                    .fill(ThemeColors.borderSubtle(for: themeManager.currentTheme))
                     .frame(height: 1),
                 alignment: .bottom
             )
@@ -78,29 +82,29 @@ struct SidebarView: View {
             // Search Bar
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(.white.opacity(0.5))
+                    .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
                     .font(.system(size: 14))
                 
                 TextField("Search applications...", text: $jobStore.searchText)
                     .textFieldStyle(.plain)
-                    .foregroundColor(.white)
+                    .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
                     .font(.system(size: 13))
             }
             .padding(10)
-            .background(Color.black.opacity(0.2))
+            .background(ThemeColors.inputBackground(for: themeManager.currentTheme))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                    .stroke(ThemeColors.inputBorder(for: themeManager.currentTheme), lineWidth: 1)
             )
             .cornerRadius(8)
             .padding(.horizontal, 20)
             .padding(.vertical, 16)
             .background(
                 Rectangle()
-                    .fill(Color.white.opacity(0.02))
+                    .fill(ThemeColors.panelSecondary(for: themeManager.currentTheme))
                     .overlay(
                         Rectangle()
-                            .fill(Color.white.opacity(0.06))
+                            .fill(ThemeColors.borderSubtle(for: themeManager.currentTheme))
                             .frame(height: 1),
                         alignment: .bottom
                     )
@@ -130,20 +134,12 @@ struct SidebarView: View {
             }
             .background(Color.clear)
         }
-        .background(
-            LinearGradient(
-                colors: [
-                    Color(red: 0.16, green: 0.18, blue: 0.22).opacity(0.4),
-                    Color(red: 0.12, green: 0.13, blue: 0.17).opacity(0.6)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .background(ThemeColors.panelSecondary(for: themeManager.currentTheme))
     }
 }
 
 struct ViewTabButton: View {
+    @EnvironmentObject var themeManager: ThemeManager
     let title: String
     let isSelected: Bool
     let action: () -> Void
@@ -152,12 +148,12 @@ struct ViewTabButton: View {
         Button(action: action) {
             Text(title)
                 .font(.system(size: 12, weight: .medium))
-                .foregroundColor(isSelected ? .white : Color.white.opacity(0.6))
+                .foregroundColor(isSelected ? .white : ThemeColors.textSecondary(for: themeManager.currentTheme))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 6)
                 .background(
                     isSelected
-                        ? Color(red: 0.0, green: 0.48, blue: 1.0)
+                        ? ThemeColors.accentBlue
                         : Color.clear
                 )
                 .cornerRadius(6)
@@ -167,6 +163,7 @@ struct ViewTabButton: View {
 }
 
 struct JobItemView: View {
+    @EnvironmentObject var themeManager: ThemeManager
     @ObservedObject var jobStore: JobStore
     let job: JobApplication
     let isSelected: Bool
@@ -175,12 +172,12 @@ struct JobItemView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text(job.title)
                 .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.white)
+                .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
                 .lineLimit(1)
             
             Text(job.company)
                 .font(.system(size: 13))
-                .foregroundColor(Color.white.opacity(0.6))
+                .foregroundColor(ThemeColors.textSecondary(for: themeManager.currentTheme))
                 .lineLimit(1)
             
             HStack {
@@ -198,26 +195,18 @@ struct JobItemView: View {
                 // Date
                 Text(job.dateString)
                     .font(.system(size: 11))
-                    .foregroundColor(Color.white.opacity(0.5))
+                    .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
             }
         }
         .padding(12)
         .background(
             ZStack {
-                // Base gradient
-                LinearGradient(
-                    colors: isSelected
-                        ? [
-                            Color(red: 0.0, green: 0.48, blue: 1.0).opacity(0.15),
-                            Color(red: 0.0, green: 0.48, blue: 1.0).opacity(0.08)
-                        ]
-                        : [
-                            Color(red: 0.23, green: 0.25, blue: 0.31).opacity(0.3),
-                            Color(red: 0.23, green: 0.25, blue: 0.31).opacity(0.2)
-                        ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
+                // Base background
+                if isSelected {
+                    ThemeColors.accentBlue.opacity(themeManager.currentTheme == .dark ? 0.12 : 0.08)
+                } else {
+                    ThemeColors.cardBackground(for: themeManager.currentTheme)
+                }
                 
                 // Top accent line for selected item
                 if isSelected {
@@ -241,8 +230,8 @@ struct JobItemView: View {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(
                     isSelected
-                        ? Color(red: 0.0, green: 0.48, blue: 1.0).opacity(0.4)
-                        : Color.white.opacity(0.1),
+                        ? ThemeColors.accentBlue.opacity(0.4)
+                        : ThemeColors.border(for: themeManager.currentTheme),
                     lineWidth: 1
                 )
         )

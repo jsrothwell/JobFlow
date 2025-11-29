@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TimelineView: View {
     @EnvironmentObject var jobStore: JobStore
+    @EnvironmentObject var themeManager: ThemeManager
     
     var sortedJobs: [JobApplication] {
         jobStore.filteredJobs.sorted { $0.dateApplied > $1.dateApplied }
@@ -35,6 +36,7 @@ struct TimelineView: View {
 }
 
 struct TimelineItemView: View {
+    @EnvironmentObject var themeManager: ThemeManager
     let job: JobApplication
     let isFirst: Bool
     let isLast: Bool
@@ -47,16 +49,7 @@ struct TimelineItemView: View {
                 // Top line
                 if !isFirst {
                     Rectangle()
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    Color.white.opacity(0.1),
-                                    Color.white.opacity(0.2)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
+                        .fill(ThemeColors.border(for: themeManager.currentTheme))
                         .frame(width: 2)
                         .frame(height: 30)
                 }
@@ -68,7 +61,7 @@ struct TimelineItemView: View {
                         .frame(width: 16, height: 16)
                     
                     Circle()
-                        .stroke(Color(red: 0.12, green: 0.13, blue: 0.17), lineWidth: 3)
+                        .stroke(ThemeColors.backgroundDeep(for: themeManager.currentTheme), lineWidth: 3)
                         .frame(width: 16, height: 16)
                     
                     if isSelected {
@@ -81,16 +74,7 @@ struct TimelineItemView: View {
                 // Bottom line
                 if !isLast {
                     Rectangle()
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    Color.white.opacity(0.2),
-                                    Color.white.opacity(0.1)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
+                        .fill(ThemeColors.border(for: themeManager.currentTheme))
                         .frame(width: 2)
                         .frame(minHeight: 80)
                 }
@@ -101,7 +85,7 @@ struct TimelineItemView: View {
                 // Date
                 Text(job.dateString)
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(Color.white.opacity(0.5))
+                    .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
                     .textCase(.uppercase)
                     .tracking(0.5)
                 
@@ -109,16 +93,16 @@ struct TimelineItemView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(job.title)
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
                     
                     Text(job.company)
                         .font(.system(size: 14))
-                        .foregroundColor(Color.white.opacity(0.7))
+                        .foregroundColor(ThemeColors.textSecondary(for: themeManager.currentTheme))
                     
                     if !job.description.isEmpty {
                         Text(job.description)
                             .font(.system(size: 13))
-                            .foregroundColor(Color.white.opacity(0.6))
+                            .foregroundColor(ThemeColors.textSecondary(for: themeManager.currentTheme))
                             .lineLimit(2)
                             .padding(.top, 4)
                     }
@@ -137,7 +121,7 @@ struct TimelineItemView: View {
                         
                         if !job.location.isEmpty {
                             Text("•")
-                                .foregroundColor(Color.white.opacity(0.3))
+                                .foregroundColor(ThemeColors.textPlaceholder(for: themeManager.currentTheme))
                             
                             HStack(spacing: 4) {
                                 Image(systemName: "mappin")
@@ -145,12 +129,12 @@ struct TimelineItemView: View {
                                 Text(job.location)
                                     .font(.system(size: 12))
                             }
-                            .foregroundColor(Color.white.opacity(0.5))
+                            .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
                         }
                         
                         if !job.salary.isEmpty {
                             Text("•")
-                                .foregroundColor(Color.white.opacity(0.3))
+                                .foregroundColor(ThemeColors.textPlaceholder(for: themeManager.currentTheme))
                             
                             HStack(spacing: 4) {
                                 Image(systemName: "dollarsign.circle")
@@ -158,7 +142,7 @@ struct TimelineItemView: View {
                                 Text(job.salary)
                                     .font(.system(size: 12))
                             }
-                            .foregroundColor(Color.white.opacity(0.5))
+                            .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
                         }
                     }
                     .padding(.top, 4)
@@ -167,19 +151,13 @@ struct TimelineItemView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
                     ZStack {
-                        LinearGradient(
-                            colors: isSelected
-                                ? [
-                                    Color(red: 0.0, green: 0.48, blue: 1.0).opacity(0.15),
-                                    Color(red: 0.0, green: 0.48, blue: 1.0).opacity(0.08)
-                                ]
-                                : [
-                                    Color(red: 0.23, green: 0.25, blue: 0.31).opacity(0.3),
-                                    Color(red: 0.23, green: 0.25, blue: 0.31).opacity(0.2)
-                                ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+                        if isSelected {
+                            // Selected state
+                            ThemeColors.accentBlue.opacity(themeManager.currentTheme == .dark ? 0.12 : 0.08)
+                        } else {
+                            // Normal state
+                            ThemeColors.cardBackground(for: themeManager.currentTheme)
+                        }
                         
                         if isSelected {
                             VStack {
@@ -200,7 +178,7 @@ struct TimelineItemView: View {
                         .stroke(
                             isSelected
                                 ? job.status.color.opacity(0.3)
-                                : Color.white.opacity(0.08),
+                                : ThemeColors.border(for: themeManager.currentTheme),
                             lineWidth: 1
                         )
                 )
@@ -214,6 +192,6 @@ struct TimelineItemView: View {
 #Preview {
     TimelineView()
         .environmentObject(JobStore())
+        .environmentObject(ThemeManager())
         .frame(width: 800, height: 700)
-        .background(Color(red: 0.12, green: 0.13, blue: 0.17))
 }

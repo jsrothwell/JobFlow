@@ -18,6 +18,7 @@
 		A10000011 /* KanbanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000010 /* KanbanView.swift */; };
 		A10000013 /* JobURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000014 /* JobURLParser.swift */; };
 		A10000015 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000016 /* ThemeManager.swift */; };
+		A10000017 /* PathExplorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000018 /* PathExplorationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		A10000012 /* JobFlow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JobFlow.entitlements; sourceTree = "<group>"; };
 		A10000014 /* JobURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobURLParser.swift; sourceTree = "<group>"; };
 		A10000016 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		A10000018 /* PathExplorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathExplorationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				A1000000C /* JobFormView.swift */,
 				A1000000E /* TimelineView.swift */,
 				A10000010 /* KanbanView.swift */,
+				A10000018 /* PathExplorationView.swift */,
 				A1000000A /* Assets.xcassets */,
 				A10000012 /* JobFlow.entitlements */,
 			);
@@ -161,6 +164,7 @@
 				A1000000D /* JobFormView.swift in Sources */,
 				A1000000F /* TimelineView.swift in Sources */,
 				A10000011 /* KanbanView.swift in Sources */,
+				A10000017 /* PathExplorationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var jobStore: JobStore
+    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         NavigationSplitView {
@@ -17,17 +18,21 @@ struct ContentView: View {
                     TimelineView()
                 case .kanban:
                     KanbanView()
+                case .path:
+                    PathExplorationView()
                 }
             }
         }
-        .background(Color(red: 0.12, green: 0.13, blue: 0.17))
+        .background(ThemeColors.backgroundDeep(for: themeManager.currentTheme))
         .sheet(isPresented: $jobStore.showingAddSheet) {
             JobFormView()
                 .environmentObject(jobStore)
+                .environmentObject(themeManager)
         }
         .sheet(item: $jobStore.editingJob) { job in
             JobFormView(job: job)
                 .environmentObject(jobStore)
+                .environmentObject(themeManager)
         }
     }
 }

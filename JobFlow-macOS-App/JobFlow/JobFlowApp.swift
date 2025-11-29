@@ -124,4 +124,5 @@ enum ViewType: String, CaseIterable {
     case list = "List"
     case timeline = "Timeline"
     case kanban = "Kanban"
+    case path = "Path"
 }
