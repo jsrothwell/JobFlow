@@ -355,7 +355,7 @@ struct InterviewFormView: View {
             .background(ThemeColors.panelSecondary(for: themeManager.currentTheme))
         }
         .background(ThemeColors.backgroundDeep(for: themeManager.currentTheme))
-        .frame(width: 700, height: 800)
+        .frame(width: 700, height: 650)
     }
     
     private func addPrepItem() {
@@ -394,9 +394,8 @@ struct InterviewFormView: View {
             } else if hasScheduledDate && calendarManager.hasAccess {
                 // Create new event if scheduled
                 Task {
-                    if let eventID = await calendarManager.createEvent(for: interview, job: job) {
-                        calendarManager.saveMappings()
-                    }
+                    _ = await calendarManager.createEvent(for: interview, job: job)
+                    calendarManager.saveMappings()
                 }
             }
         } else {
@@ -405,9 +404,8 @@ struct InterviewFormView: View {
             // Create calendar event if scheduled and has access
             if hasScheduledDate && calendarManager.hasAccess {
                 Task {
-                    if let eventID = await calendarManager.createEvent(for: interview, job: job) {
-                        calendarManager.saveMappings()
-                    }
+                    _ = await calendarManager.createEvent(for: interview, job: job)
+                    calendarManager.saveMappings()
                 }
             }
         }

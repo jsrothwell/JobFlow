@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>JobFlow needs access to your calendar to automatically create events for your scheduled interviews, set reminders, and keep your interview schedule synchronized.</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>JobFlow needs full calendar access to create, update, and manage interview events with reminders to help you stay organized throughout your job search.</string>
+</dict>
+</plist>

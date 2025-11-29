@@ -2,6 +2,7 @@ import Foundation
 import EventKit
 import SwiftUI
 
+@MainActor
 class CalendarManager: ObservableObject {
     private let eventStore = EKEventStore()
     
@@ -21,10 +22,11 @@ class CalendarManager: ObservableObject {
     func checkAuthorizationStatus() {
         if #available(macOS 14.0, *) {
             authorizationStatus = EKEventStore.authorizationStatus(for: .event)
+            hasAccess = (authorizationStatus == .fullAccess)
         } else {
             authorizationStatus = EKEventStore.authorizationStatus(for: .event)
+            hasAccess = (authorizationStatus == .authorized)
         }
-        hasAccess = (authorizationStatus == .fullAccess || authorizationStatus == .authorized)
     }
     
     func requestAccess() async -> Bool {

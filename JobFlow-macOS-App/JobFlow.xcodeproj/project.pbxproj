@@ -42,6 +42,7 @@
 		A1000000E /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		A10000010 /* KanbanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanbanView.swift; sourceTree = "<group>"; };
 		A10000012 /* JobFlow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JobFlow.entitlements; sourceTree = "<group>"; };
+		A10000037 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A10000014 /* JobURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobURLParser.swift; sourceTree = "<group>"; };
 		A10000016 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		A10000018 /* PathExplorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathExplorationView.swift; sourceTree = "<group>"; };
@@ -100,6 +101,7 @@
 				A10000018 /* PathExplorationView.swift */,
 				A1000000A /* Assets.xcassets */,
 				A10000012 /* JobFlow.entitlements */,
+				A10000037 /* Info.plist */,
 			);
 			path = JobFlow;
 			sourceTree = "<group>";
@@ -217,9 +219,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = JobFlow/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = JobFlow;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -249,7 +252,8 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = JobFlow/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = JobFlow;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
