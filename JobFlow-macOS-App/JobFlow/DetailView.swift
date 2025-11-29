@@ -3,6 +3,10 @@ import SwiftUI
 struct DetailView: View {
     @EnvironmentObject var jobStore: JobStore
     @EnvironmentObject var themeManager: ThemeManager
+    @EnvironmentObject var calendarManager: CalendarManager
+    
+    @State private var showingInterviewForm = false
+    @State private var showingContactForm = false
     
     var body: some View {
         ZStack {
@@ -172,8 +176,172 @@ struct DetailView: View {
                             }
                             .buttonStyle(.plain)
                         }
+                        
+                        // Interviews Section
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "calendar.badge.clock")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(.blue)
+                                    
+                                    Text("Interviews")
+                                        .font(.system(size: 20, weight: .semibold))
+                                        .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
+                                    
+                                    Text("(\(selectedJob.interviews.count))")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(ThemeColors.textSecondary(for: themeManager.currentTheme))
+                                }
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    showingInterviewForm = true
+                                }) {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: "plus.circle.fill")
+                                            .font(.system(size: 14))
+                                        Text("Add Interview")
+                                            .font(.system(size: 14, weight: .medium))
+                                    }
+                                    .foregroundColor(.blue)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                            
+                            if selectedJob.interviews.isEmpty {
+                                VStack(spacing: 12) {
+                                    Image(systemName: "calendar.badge.clock")
+                                        .font(.system(size: 48))
+                                        .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
+                                    
+                                    Text("No interviews scheduled")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(ThemeColors.textSecondary(for: themeManager.currentTheme))
+                                    
+                                    Button(action: {
+                                        showingInterviewForm = true
+                                    }) {
+                                        Text("Schedule First Interview")
+                                            .font(.system(size: 14, weight: .medium))
+                                            .foregroundColor(.white)
+                                            .padding(.horizontal, 16)
+                                            .padding(.vertical, 8)
+                                            .background(Color.blue)
+                                            .cornerRadius(8)
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(32)
+                                .background(ThemeColors.cardBackground(for: themeManager.currentTheme))
+                                .cornerRadius(12)
+                            } else {
+                                VStack(spacing: 12) {
+                                    ForEach(selectedJob.interviews.sorted(by: { i1, i2 in
+                                        guard let d1 = i1.scheduledDate, let d2 = i2.scheduledDate else { return false }
+                                        return d1 < d2
+                                    })) { interview in
+                                        InterviewCard(interview: interview, job: selectedJob)
+                                            .environmentObject(jobStore)
+                                            .environmentObject(themeManager)
+                                    }
+                                }
+                            }
+                        }
+                        .padding(24)
+                        .background(ThemeColors.panelSecondary(for: themeManager.currentTheme))
+                        .cornerRadius(16)
+                        
+                        // Contacts Section
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "person.2.fill")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(.purple)
+                                    
+                                    Text("Contacts")
+                                        .font(.system(size: 20, weight: .semibold))
+                                        .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
+                                    
+                                    Text("(\(jobStore.getContacts(for: selectedJob).count))")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(ThemeColors.textSecondary(for: themeManager.currentTheme))
+                                }
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    showingContactForm = true
+                                }) {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: "plus.circle.fill")
+                                            .font(.system(size: 14))
+                                        Text("Add Contact")
+                                            .font(.system(size: 14, weight: .medium))
+                                    }
+                                    .foregroundColor(.purple)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                            
+                            let contacts = jobStore.getContacts(for: selectedJob)
+                            
+                            if contacts.isEmpty {
+                                VStack(spacing: 12) {
+                                    Image(systemName: "person.2.fill")
+                                        .font(.system(size: 48))
+                                        .foregroundColor(ThemeColors.textTertiary(for: themeManager.currentTheme))
+                                    
+                                    Text("No contacts yet")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(ThemeColors.textSecondary(for: themeManager.currentTheme))
+                                    
+                                    Button(action: {
+                                        showingContactForm = true
+                                    }) {
+                                        Text("Add First Contact")
+                                            .font(.system(size: 14, weight: .medium))
+                                            .foregroundColor(.white)
+                                            .padding(.horizontal, 16)
+                                            .padding(.vertical, 8)
+                                            .background(Color.purple)
+                                            .cornerRadius(8)
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(32)
+                                .background(ThemeColors.cardBackground(for: themeManager.currentTheme))
+                                .cornerRadius(12)
+                            } else {
+                                VStack(spacing: 12) {
+                                    ForEach(contacts) { contact in
+                                        ContactCard(contact: contact)
+                                            .environmentObject(jobStore)
+                                            .environmentObject(themeManager)
+                                    }
+                                }
+                            }
+                        }
+                        .padding(24)
+                        .background(ThemeColors.panelSecondary(for: themeManager.currentTheme))
+                        .cornerRadius(16)
                     }
                     .padding(32)
+                }
+                .sheet(isPresented: $showingInterviewForm) {
+                    InterviewFormView(interview: nil, job: selectedJob)
+                        .environmentObject(jobStore)
+                        .environmentObject(themeManager)
+                        .environmentObject(calendarManager)
+                }
+                .sheet(isPresented: $showingContactForm) {
+                    ContactFormView(contact: nil)
+                        .environmentObject(jobStore)
+                        .environmentObject(themeManager)
                 }
             } else {
                 // Empty State with JobFlow Branding

@@ -3,6 +3,7 @@ import SwiftUI
 struct InterviewFormView: View {
     @EnvironmentObject var jobStore: JobStore
     @EnvironmentObject var themeManager: ThemeManager
+    @EnvironmentObject var calendarManager: CalendarManager
     @Environment(\.dismiss) var dismiss
     
     let job: JobApplication
@@ -383,8 +384,32 @@ struct InterviewFormView: View {
         
         if editingInterview != nil {
             jobStore.updateInterview(interview, in: job)
+            
+            // Update calendar event if exists
+            if let eventID = calendarManager.getEventID(for: interview.id) {
+                Task {
+                    _ = await calendarManager.updateEvent(for: interview, job: job, eventID: eventID)
+                    calendarManager.saveMappings()
+                }
+            } else if hasScheduledDate && calendarManager.hasAccess {
+                // Create new event if scheduled
+                Task {
+                    if let eventID = await calendarManager.createEvent(for: interview, job: job) {
+                        calendarManager.saveMappings()
+                    }
+                }
+            }
         } else {
             jobStore.addInterview(interview, to: job)
+            
+            // Create calendar event if scheduled and has access
+            if hasScheduledDate && calendarManager.hasAccess {
+                Task {
+                    if let eventID = await calendarManager.createEvent(for: interview, job: job) {
+                        calendarManager.saveMappings()
+                    }
+                }
+            }
         }
         
         dismiss()

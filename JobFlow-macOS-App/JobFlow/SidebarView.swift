@@ -3,6 +3,9 @@ import SwiftUI
 struct SidebarView: View {
     @EnvironmentObject var jobStore: JobStore
     @EnvironmentObject var themeManager: ThemeManager
+    @EnvironmentObject var calendarManager: CalendarManager
+    
+    @State private var showingCalendarSettings = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -110,6 +113,35 @@ struct SidebarView: View {
                     )
             )
             
+            // Calendar Settings Button
+            Button(action: {
+                showingCalendarSettings = true
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "calendar.badge.gearshape")
+                        .font(.system(size: 14))
+                    Text("Calendar Settings")
+                        .font(.system(size: 13, weight: .medium))
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 11))
+                }
+                .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
+                .padding(12)
+                .background(ThemeColors.cardBackground(for: themeManager.currentTheme))
+                .cornerRadius(10)
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            
+            // Upcoming Interviews Widget
+            UpcomingInterviewsWidget()
+                .environmentObject(jobStore)
+                .environmentObject(themeManager)
+                .padding(.horizontal, 20)
+                .padding(.top, 12)
+            
             // Job List
             ScrollView {
                 LazyVStack(spacing: 6) {
@@ -135,6 +167,12 @@ struct SidebarView: View {
             .background(Color.clear)
         }
         .background(ThemeColors.panelSecondary(for: themeManager.currentTheme))
+        .sheet(isPresented: $showingCalendarSettings) {
+            CalendarSettingsView()
+                .environmentObject(calendarManager)
+                .environmentObject(jobStore)
+                .environmentObject(themeManager)
+        }
     }
 }
 

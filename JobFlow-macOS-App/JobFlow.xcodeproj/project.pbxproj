@@ -21,6 +21,13 @@
 		A10000017 /* PathExplorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000018 /* PathExplorationView.swift */; };
 		A10000019 /* Interview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020 /* Interview.swift */; };
 		A10000021 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000022 /* Contact.swift */; };
+		A10000023 /* InterviewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000024 /* InterviewCard.swift */; };
+		A10000025 /* InterviewFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000026 /* InterviewFormView.swift */; };
+		A10000027 /* ContactCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000028 /* ContactCard.swift */; };
+		A10000029 /* ContactFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000030 /* ContactFormView.swift */; };
+		A10000031 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000032 /* CalendarManager.swift */; };
+		A10000033 /* CalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000034 /* CalendarSettingsView.swift */; };
+		A10000035 /* UpcomingInterviewsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000036 /* UpcomingInterviewsWidget.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +47,13 @@
 		A10000018 /* PathExplorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathExplorationView.swift; sourceTree = "<group>"; };
 		A10000020 /* Interview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interview.swift; sourceTree = "<group>"; };
 		A10000022 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		A10000024 /* InterviewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewCard.swift; sourceTree = "<group>"; };
+		A10000026 /* InterviewFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewFormView.swift; sourceTree = "<group>"; };
+		A10000028 /* ContactCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCard.swift; sourceTree = "<group>"; };
+		A10000030 /* ContactFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFormView.swift; sourceTree = "<group>"; };
+		A10000032 /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
+		A10000034 /* CalendarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSettingsView.swift; sourceTree = "<group>"; };
+		A10000036 /* UpcomingInterviewsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingInterviewsWidget.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,9 +85,16 @@
 				A10000022 /* Contact.swift */,
 				A10000014 /* JobURLParser.swift */,
 				A10000016 /* ThemeManager.swift */,
+				A10000032 /* CalendarManager.swift */,
 				A10000006 /* SidebarView.swift */,
 				A10000008 /* DetailView.swift */,
 				A1000000C /* JobFormView.swift */,
+				A10000024 /* InterviewCard.swift */,
+				A10000026 /* InterviewFormView.swift */,
+				A10000028 /* ContactCard.swift */,
+				A10000030 /* ContactFormView.swift */,
+				A10000034 /* CalendarSettingsView.swift */,
+				A10000036 /* UpcomingInterviewsWidget.swift */,
 				A1000000E /* TimelineView.swift */,
 				A10000010 /* KanbanView.swift */,
 				A10000018 /* PathExplorationView.swift */,
@@ -165,6 +186,13 @@
 				A10000005 /* JobApplication.swift in Sources */,
 				A10000019 /* Interview.swift in Sources */,
 				A10000021 /* Contact.swift in Sources */,
+				A10000023 /* InterviewCard.swift in Sources */,
+				A10000025 /* InterviewFormView.swift in Sources */,
+				A10000027 /* ContactCard.swift in Sources */,
+				A10000029 /* ContactFormView.swift in Sources */,
+				A10000031 /* CalendarManager.swift in Sources */,
+				A10000033 /* CalendarSettingsView.swift in Sources */,
+				A10000035 /* UpcomingInterviewsWidget.swift in Sources */,
 				A10000013 /* JobURLParser.swift in Sources */,
 				A10000015 /* ThemeManager.swift in Sources */,
 				A10000007 /* SidebarView.swift in Sources */,

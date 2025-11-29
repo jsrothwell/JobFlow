@@ -4,12 +4,14 @@ import SwiftUI
 struct JobFlowApp: App {
     @StateObject private var jobStore = JobStore()
     @StateObject private var themeManager = ThemeManager()
+    @StateObject private var calendarManager = CalendarManager()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(jobStore)
                 .environmentObject(themeManager)
+                .environmentObject(calendarManager)
                 .preferredColorScheme(themeManager.currentTheme.colorScheme)
                 .frame(minWidth: 1000, minHeight: 700)
         }
@@ -158,7 +160,7 @@ class JobStore: ObservableObject {
     func deleteContact(_ contact: Contact) {
         contacts.removeAll { $0.id == contact.id }
         // Remove contact references from jobs
-        for (index, job) in jobs.enumerated() {
+        for index in jobs.indices {
             jobs[index].contactIDs.removeAll { $0 == contact.id }
         }
     }
