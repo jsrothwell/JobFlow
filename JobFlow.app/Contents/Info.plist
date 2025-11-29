@@ -4,8 +4,6 @@
 <dict>
 	<key>BuildMachineOSBuild</key>
 	<string>25C5048a</string>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>JobFlow</string>
 	<key>CFBundleExecutable</key>
@@ -16,14 +14,12 @@
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.jobflow.app</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>JobFlow</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>7.0</string>
 	<key>CFBundleSupportedPlatforms</key>
 	<array>
 		<string>MacOSX</string>
@@ -52,5 +48,11 @@
 	<string>14.0</string>
 	<key>NSAccentColorName</key>
 	<string>AccentColor</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>JobFlow needs full calendar access to create, update, and manage interview events with reminders to help you stay organized throughout your job search.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>JobFlow needs access to your calendar to automatically create events for your scheduled interviews, set reminders, and keep your interview schedule synchronized.</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2024. All rights reserved.</string>
 </dict>
 </plist>

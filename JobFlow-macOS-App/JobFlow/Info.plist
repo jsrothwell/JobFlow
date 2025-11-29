@@ -2,9 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.jobflow.app</string>
+	<key>CFBundleName</key>
+	<string>JobFlow</string>
+	<key>CFBundleDisplayName</key>
+	<string>JobFlow</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>CFBundleShortVersionString</key>
+	<string>7.0</string>
+	<key>CFBundleExecutable</key>
+	<string>JobFlow</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.productivity</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>JobFlow needs access to your calendar to automatically create events for your scheduled interviews, set reminders, and keep your interview schedule synchronized.</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>JobFlow needs full calendar access to create, update, and manage interview events with reminders to help you stay organized throughout your job search.</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2024. All rights reserved.</string>
 </dict>
 </plist>

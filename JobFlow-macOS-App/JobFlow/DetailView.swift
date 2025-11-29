@@ -339,7 +339,7 @@ struct DetailView: View {
                         .environmentObject(calendarManager)
                 }
                 .sheet(isPresented: $showingContactForm) {
-                    ContactFormView(contact: nil)
+                    ContactFormView(contact: nil, linkToJob: selectedJob)
                         .environmentObject(jobStore)
                         .environmentObject(themeManager)
                 }

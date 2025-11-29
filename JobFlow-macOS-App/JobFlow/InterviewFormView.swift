@@ -364,6 +364,44 @@ struct InterviewFormView: View {
         newPrepItem = ""
     }
     
+    private func autoCreateContact() {
+        // Check if contact already exists by email or name
+        let existingContact = jobStore.contacts.first { contact in
+            if !interviewerEmail.isEmpty && contact.email.lowercased() == interviewerEmail.lowercased() {
+                return true
+            }
+            if contact.name.lowercased() == interviewerName.lowercased() && contact.company.lowercased() == job.company.lowercased() {
+                return true
+            }
+            return false
+        }
+        
+        // If contact doesn't exist, create it
+        if existingContact == nil {
+            let newContact = Contact(
+                name: interviewerName,
+                role: .interviewer,
+                title: interviewerTitle,
+                company: job.company,
+                email: interviewerEmail,
+                phone: "",
+                linkedInURL: "",
+                notes: "Auto-created from \(round.rawValue) interview",
+                lastContactDate: hasScheduledDate ? scheduledDate : Date(),
+                interactions: [],
+                tags: ["interviewer"]
+            )
+            
+            jobStore.addContact(newContact)
+            jobStore.linkContact(newContact, to: job)
+        } else if let existingContact = existingContact {
+            // Link existing contact to job if not already linked
+            if !job.contactIDs.contains(existingContact.id) {
+                jobStore.linkContact(existingContact, to: job)
+            }
+        }
+    }
+    
     private func saveInterview() {
         let interview = Interview(
             id: editingInterview?.id ?? UUID(),
@@ -381,6 +419,11 @@ struct InterviewFormView: View {
             feedback: feedback,
             rating: rating
         )
+        
+        // Auto-create contact if interviewer info is provided
+        if !interviewerName.isEmpty {
+            autoCreateContact()
+        }
         
         if editingInterview != nil {
             jobStore.updateInterview(interview, in: job)

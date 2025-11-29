@@ -6,6 +6,7 @@ struct ContactFormView: View {
     @Environment(\.dismiss) var dismiss
     
     let editingContact: Contact?
+    let linkToJob: JobApplication? // Optional job to auto-link to
     
     @State private var name: String
     @State private var role: ContactRole
@@ -18,13 +19,14 @@ struct ContactFormView: View {
     @State private var tags: [String]
     @State private var newTag: String = ""
     
-    init(contact: Contact? = nil) {
+    init(contact: Contact? = nil, linkToJob: JobApplication? = nil) {
         self.editingContact = contact
+        self.linkToJob = linkToJob
         
         _name = State(initialValue: contact?.name ?? "")
         _role = State(initialValue: contact?.role ?? .recruiter)
         _title = State(initialValue: contact?.title ?? "")
-        _company = State(initialValue: contact?.company ?? "")
+        _company = State(initialValue: contact?.company ?? linkToJob?.company ?? "")
         _email = State(initialValue: contact?.email ?? "")
         _phone = State(initialValue: contact?.phone ?? "")
         _linkedInURL = State(initialValue: contact?.linkedInURL ?? "")
@@ -297,6 +299,11 @@ struct ContactFormView: View {
             jobStore.updateContact(contact)
         } else {
             jobStore.addContact(contact)
+            
+            // Auto-link to job if provided
+            if let job = linkToJob {
+                jobStore.linkContact(contact, to: job)
+            }
         }
         
         dismiss()
