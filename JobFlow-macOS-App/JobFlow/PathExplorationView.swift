@@ -131,11 +131,7 @@ struct FlowStatistics {
         rejected = jobs.filter { $0.status == .rejected }.count
         accepted = jobs.filter { $0.status == .accepted }.count
         
-        // For flow visualization, we'll simulate the progression
-        // In a real app, you'd track status history
-        let total = jobs.count
-        
-        // Estimate flows (simplified model)
+        // Estimate flows (simplified model based on current status counts)
         appliedToInterviewing = interviewing + offer + accepted
         appliedToRejected = max(0, rejected - (interviewing + offer) / 3)
         interviewingToOffer = offer + accepted

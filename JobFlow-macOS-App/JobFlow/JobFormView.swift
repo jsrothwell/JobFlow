@@ -98,6 +98,7 @@ struct JobFormView: View {
                     jobURL: $jobURL,
                     urlParser: urlParser,
                     isImporting: $isImporting,
+                    isImportingDetails: $isImportingDetails,
                     onImport: { importedJob in
                         title = importedJob.title
                         company = importedJob.company
@@ -105,7 +106,8 @@ struct JobFormView: View {
                         salary = importedJob.salary
                         description = importedJob.description
                         notes = importedJob.notes
-                    }
+                    },
+                    onImportDetails: importDetailsFromURL
                 )
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
@@ -497,7 +499,9 @@ struct URLImportSection: View {
     @Binding var jobURL: String
     @ObservedObject var urlParser: JobURLParser
     @Binding var isImporting: Bool
+    @Binding var isImportingDetails: Bool
     let onImport: (JobApplication) -> Void
+    let onImportDetails: () -> Void
     
     var body: some View {
         VStack(spacing: 12) {
@@ -575,7 +579,7 @@ struct URLImportSection: View {
                     .buttonStyle(.plain)
                     .disabled(jobURL.isEmpty || isImporting)
                     
-                    Button(action: importDetailsFromURL) {
+                    Button(action: onImportDetails) {
                         HStack(spacing: 6) {
                             if isImportingDetails {
                                 ProgressView()
