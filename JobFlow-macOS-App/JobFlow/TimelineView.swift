@@ -22,6 +22,10 @@ struct TimelineView: View {
                             jobStore.selectedJob = job
                         }
                     }
+                    .onTapGesture(count: 2) {
+                        // Double-click to edit
+                        jobStore.editingJob = job
+                    }
                 }
             }
             .padding(24)

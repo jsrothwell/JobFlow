@@ -14,6 +14,11 @@ struct JobFormView: View {
     @State private var salary: String
     @State private var location: String
     @State private var notes: String
+    @State private var jobURL: String = ""
+    
+    @StateObject private var urlParser = JobURLParser()
+    @State private var showingURLImport = false
+    @State private var isImporting = false
     
     init(job: JobApplication? = nil) {
         self.editingJob = job
@@ -35,9 +40,26 @@ struct JobFormView: View {
         VStack(spacing: 0) {
             // Header
             HStack {
-                Text(editingJob == nil ? "New Application" : "Edit Application")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.white)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(editingJob == nil ? "New Application" : "Edit Application")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(.white)
+                    
+                    if editingJob == nil {
+                        Button(action: {
+                            showingURLImport.toggle()
+                        }) {
+                            HStack(spacing: 6) {
+                                Image(systemName: showingURLImport ? "chevron.up" : "link")
+                                    .font(.system(size: 12))
+                                Text(showingURLImport ? "Hide URL Saver" : "Save from URL")
+                                    .font(.system(size: 13, weight: .medium))
+                            }
+                            .foregroundColor(Color(red: 0.0, green: 0.48, blue: 1.0))
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
                 
                 Spacer()
                 
@@ -65,6 +87,24 @@ struct JobFormView: View {
                     .frame(height: 1),
                 alignment: .bottom
             )
+            
+            // URL Import Section (Collapsible)
+            if showingURLImport {
+                URLImportSection(
+                    jobURL: $jobURL,
+                    urlParser: urlParser,
+                    isImporting: $isImporting,
+                    onImport: { importedJob in
+                        title = importedJob.title
+                        company = importedJob.company
+                        location = importedJob.location
+                        salary = importedJob.salary
+                        description = importedJob.description
+                        notes = importedJob.notes
+                    }
+                )
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
             
             // Form Content
             ScrollView {
@@ -352,4 +392,231 @@ struct FormTextField: View {
 #Preview {
     JobFormView()
         .environmentObject(JobStore())
+}
+
+// MARK: - URL Import Section
+struct URLImportSection: View {
+    @Binding var jobURL: String
+    @ObservedObject var urlParser: JobURLParser
+    @Binding var isImporting: Bool
+    let onImport: (JobApplication) -> Void
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: "link.circle.fill")
+                    .foregroundColor(Color(red: 0.0, green: 0.48, blue: 1.0))
+                    .font(.system(size: 16))
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Save Job URL")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.white)
+                    
+                    Text("Paste a job posting URL to save it and detect the company")
+                        .font(.system(size: 11))
+                        .foregroundColor(Color.white.opacity(0.6))
+                }
+                
+                Spacer()
+            }
+            
+            // URL Input
+            HStack(spacing: 8) {
+                ZStack(alignment: .leading) {
+                    if jobURL.isEmpty {
+                        Text("Paste job posting URL (company name will be auto-detected from some URLs)")
+                            .font(.system(size: 13))
+                            .foregroundColor(Color.white.opacity(0.4))
+                            .padding(.leading, 12)
+                    }
+                    
+                    TextField("", text: $jobURL)
+                        .textFieldStyle(.plain)
+                        .font(.system(size: 13))
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .disabled(isImporting)
+                }
+                .background(Color.black.opacity(0.2))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(
+                            urlParser.isURLSupported(jobURL) && !jobURL.isEmpty
+                                ? Color(red: 0.2, green: 0.78, blue: 0.35).opacity(0.5)
+                                : Color.white.opacity(0.1),
+                            lineWidth: 1
+                        )
+                )
+                .cornerRadius(8)
+                
+                Button(action: importFromURL) {
+                    HStack(spacing: 6) {
+                        if isImporting {
+                            ProgressView()
+                                .scaleEffect(0.7)
+                                .frame(width: 14, height: 14)
+                        } else {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 14))
+                        }
+                        Text(isImporting ? "Saving..." : "Save URL")
+                            .font(.system(size: 13, weight: .medium))
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(
+                        jobURL.isEmpty || isImporting
+                            ? Color.white.opacity(0.1)
+                            : Color(red: 0.0, green: 0.48, blue: 1.0)
+                    )
+                    .cornerRadius(8)
+                }
+                .buttonStyle(.plain)
+                .disabled(jobURL.isEmpty || isImporting)
+            }
+            
+            // Supported boards hint
+            if !jobURL.isEmpty {
+                HStack(spacing: 6) {
+                    if let boardName = urlParser.getSupportedBoardName(jobURL) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(Color(red: 0.2, green: 0.78, blue: 0.35))
+                            .font(.system(size: 12))
+                        Text("Recognized: \(boardName)")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color(red: 0.2, green: 0.78, blue: 0.35))
+                    } else if urlParser.isURLSupported(jobURL) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(Color(red: 0.2, green: 0.78, blue: 0.35))
+                            .font(.system(size: 12))
+                        Text("Recognized job board - URL will be saved")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color(red: 0.2, green: 0.78, blue: 0.35))
+                    } else {
+                        Image(systemName: "info.circle")
+                            .foregroundColor(Color.white.opacity(0.5))
+                            .font(.system(size: 12))
+                        Text("URL will be saved to notes")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color.white.opacity(0.5))
+                    }
+                    Spacer()
+                }
+            }
+            
+            // Success message
+            if let success = urlParser.successMessage {
+                HStack(spacing: 6) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(Color(red: 0.2, green: 0.78, blue: 0.35))
+                        .font(.system(size: 12))
+                    Text(success)
+                        .font(.system(size: 12))
+                        .foregroundColor(Color(red: 0.2, green: 0.78, blue: 0.35))
+                    Spacer()
+                }
+            }
+            
+            // Error message
+            if let error = urlParser.errorMessage {
+                HStack(spacing: 6) {
+                    Image(systemName: "exclamationmark.circle.fill")
+                        .foregroundColor(Color(red: 1.0, green: 0.23, blue: 0.19))
+                        .font(.system(size: 12))
+                    Text(error)
+                        .font(.system(size: 12))
+                        .foregroundColor(Color(red: 1.0, green: 0.23, blue: 0.19))
+                    Spacer()
+                }
+            }
+            
+            // Supported boards list
+            DisclosureGroup {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "info.circle.fill")
+                            .foregroundColor(Color(red: 0.0, green: 0.48, blue: 1.0))
+                            .font(.system(size: 12))
+                        Text("This feature saves the URL and extracts company names from ATS platforms")
+                            .font(.system(size: 11))
+                            .foregroundColor(Color.white.opacity(0.7))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(.bottom, 8)
+                    
+                    Text("🇨🇦 Canadian:")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.white)
+                    Text("Indeed.ca, Job Bank Canada, Workopolis, Eluta, CharityVillage")
+                        .font(.system(size: 11))
+                        .foregroundColor(Color.white.opacity(0.6))
+                    
+                    Text("🌎 International:")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.white)
+                        .padding(.top, 4)
+                    Text("LinkedIn, Indeed, Glassdoor, Monster, ZipRecruiter, Stack Overflow")
+                        .font(.system(size: 11))
+                        .foregroundColor(Color.white.opacity(0.6))
+                    
+                    Text("🏢 ATS (Company extracted from URL):")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.white)
+                        .padding(.top, 4)
+                    Text("Greenhouse, Lever, Workday, Taleo, iCIMS, BambooHR, Breezy")
+                        .font(.system(size: 11))
+                        .foregroundColor(Color.white.opacity(0.6))
+                }
+                .padding(.top, 8)
+            } label: {
+                HStack {
+                    Text("View supported job boards & ATS platforms")
+                        .font(.system(size: 12))
+                        .foregroundColor(Color(red: 0.0, green: 0.48, blue: 1.0))
+                    Spacer()
+                }
+            }
+            .accentColor(Color(red: 0.0, green: 0.48, blue: 1.0))
+        }
+        .padding(16)
+        .background(
+            LinearGradient(
+                colors: [
+                    Color(red: 0.0, green: 0.48, blue: 1.0).opacity(0.08),
+                    Color(red: 0.0, green: 0.48, blue: 1.0).opacity(0.03)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(red: 0.0, green: 0.48, blue: 1.0).opacity(0.2), lineWidth: 1)
+        )
+        .cornerRadius(12)
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
+    }
+    
+    private func importFromURL() {
+        isImporting = true
+        
+        Task {
+            if let job = await urlParser.parseJobURL(jobURL) {
+                await MainActor.run {
+                    // Actually populate the form fields
+                    onImport(job)
+                    isImporting = false
+                    // Clear the URL field after successful import
+                    jobURL = ""
+                }
+            } else {
+                await MainActor.run {
+                    isImporting = false
+                }
+            }
+        }
+    }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SidebarView: View {
     @EnvironmentObject var jobStore: JobStore
+    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         VStack(spacing: 0) {
@@ -10,10 +11,24 @@ struct SidebarView: View {
                 HStack {
                     Text("Applications")
                         .font(.system(size: 22, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
+                        .foregroundColor(ThemeColors.textPrimary(for: themeManager.currentTheme))
                     
                     Spacer()
                     
+                    // Theme Toggle
+                    Button(action: {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            themeManager.toggle()
+                        }
+                    }) {
+                        Image(systemName: themeManager.currentTheme == .dark ? "sun.max.fill" : "moon.fill")
+                            .font(.system(size: 18))
+                            .foregroundColor(ThemeColors.accentBlue)
+                    }
+                    .buttonStyle(.plain)
+                    .help(themeManager.currentTheme == .dark ? "Switch to Light Mode" : "Switch to Dark Mode")
+                    
+                    // Add Button
                     Button(action: {
                         jobStore.showingAddSheet = true
                     }) {
@@ -104,6 +119,10 @@ struct SidebarView: View {
                             withAnimation(.easeInOut(duration: 0.2)) {
                                 jobStore.selectedJob = job
                             }
+                        }
+                        .onTapGesture(count: 2) {
+                            // Double-click to edit
+                            jobStore.editingJob = job
                         }
                     }
                 }

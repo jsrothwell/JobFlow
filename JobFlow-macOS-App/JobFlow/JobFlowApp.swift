@@ -3,11 +3,14 @@ import SwiftUI
 @main
 struct JobFlowApp: App {
     @StateObject private var jobStore = JobStore()
+    @StateObject private var themeManager = ThemeManager()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(jobStore)
+                .environmentObject(themeManager)
+                .preferredColorScheme(themeManager.currentTheme.colorScheme)
                 .frame(minWidth: 1000, minHeight: 700)
         }
         .windowStyle(.hiddenTitleBar)
@@ -73,7 +76,7 @@ class JobStore: ObservableObject {
     ]
     
     @Published var selectedJob: JobApplication?
-    @Published var selectedView: ViewType = .list
+    @Published var selectedView: ViewType = .kanban // Changed to Kanban as default
     @Published var searchText: String = ""
     @Published var showingAddSheet = false
     @Published var editingJob: JobApplication?

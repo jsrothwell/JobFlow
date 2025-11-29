@@ -16,6 +16,8 @@
 		A1000000D /* JobFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000C /* JobFormView.swift */; };
 		A1000000F /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000E /* TimelineView.swift */; };
 		A10000011 /* KanbanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000010 /* KanbanView.swift */; };
+		A10000013 /* JobURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000014 /* JobURLParser.swift */; };
+		A10000015 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000016 /* ThemeManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		A1000000E /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		A10000010 /* KanbanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanbanView.swift; sourceTree = "<group>"; };
 		A10000012 /* JobFlow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JobFlow.entitlements; sourceTree = "<group>"; };
+		A10000014 /* JobURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobURLParser.swift; sourceTree = "<group>"; };
+		A10000016 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +61,8 @@
 				A10000000 /* JobFlowApp.swift */,
 				A10000002 /* ContentView.swift */,
 				A10000004 /* JobApplication.swift */,
+				A10000014 /* JobURLParser.swift */,
+				A10000016 /* ThemeManager.swift */,
 				A10000006 /* SidebarView.swift */,
 				A10000008 /* DetailView.swift */,
 				A1000000C /* JobFormView.swift */,
@@ -148,6 +154,8 @@
 				A10000001 /* JobFlowApp.swift in Sources */,
 				A10000003 /* ContentView.swift in Sources */,
 				A10000005 /* JobApplication.swift in Sources */,
+				A10000013 /* JobURLParser.swift in Sources */,
+				A10000015 /* ThemeManager.swift in Sources */,
 				A10000007 /* SidebarView.swift in Sources */,
 				A10000009 /* DetailView.swift in Sources */,
 				A1000000D /* JobFormView.swift in Sources */,
