@@ -153,126 +153,14 @@ struct SankeyDiagram: View {
     let stats: FlowStatistics
     @EnvironmentObject var themeManager: ThemeManager
     
-    let nodeWidth: CGFloat = 200
-    let nodeSpacing: CGFloat = 350
-    let canvasWidth: CGFloat = 1600
-    let canvasHeight: CGFloat = 900
+    let canvasWidth: CGFloat = 1400
+    let canvasHeight: CGFloat = 800
+    let nodeWidth: CGFloat = 180
+    let columnSpacing: CGFloat = 280
     
     var body: some View {
         ZStack {
-            // Draw flows (behind nodes)
-            FlowPath(
-                from: nodePosition(column: 0, value: stats.totalApplications, maxValue: stats.totalApplications),
-                fromHeight: nodeHeight(value: stats.totalApplications, maxValue: stats.totalApplications),
-                to: nodePosition(column: 1, value: stats.appliedToInterviewing, maxValue: stats.totalApplications),
-                toHeight: nodeHeight(value: stats.appliedToInterviewing, maxValue: stats.totalApplications),
-                color: ApplicationStatus.interviewing.color,
-                value: stats.appliedToInterviewing,
-                total: stats.totalApplications
-            )
-            
-            FlowPath(
-                from: nodePosition(column: 0, value: stats.totalApplications, maxValue: stats.totalApplications),
-                fromHeight: nodeHeight(value: stats.totalApplications, maxValue: stats.totalApplications),
-                fromOffset: nodeHeight(value: stats.appliedToInterviewing, maxValue: stats.totalApplications),
-                to: nodePosition(column: 1, value: stats.appliedToRejected, maxValue: stats.totalApplications, offset: stats.appliedToInterviewing + stats.interviewingToOffer),
-                toHeight: nodeHeight(value: stats.appliedToRejected, maxValue: stats.totalApplications),
-                color: ApplicationStatus.rejected.color,
-                value: stats.appliedToRejected,
-                total: stats.totalApplications
-            )
-            
-            if stats.appliedToInterviewing > 0 {
-                FlowPath(
-                    from: nodePosition(column: 1, value: stats.appliedToInterviewing, maxValue: stats.totalApplications),
-                    fromHeight: nodeHeight(value: stats.appliedToInterviewing, maxValue: stats.totalApplications),
-                    to: nodePosition(column: 2, value: stats.interviewingToOffer, maxValue: stats.totalApplications),
-                    toHeight: nodeHeight(value: stats.interviewingToOffer, maxValue: stats.totalApplications),
-                    color: ApplicationStatus.offer.color,
-                    value: stats.interviewingToOffer,
-                    total: stats.totalApplications
-                )
-                
-                FlowPath(
-                    from: nodePosition(column: 1, value: stats.appliedToInterviewing, maxValue: stats.totalApplications),
-                    fromHeight: nodeHeight(value: stats.appliedToInterviewing, maxValue: stats.totalApplications),
-                    fromOffset: nodeHeight(value: stats.interviewingToOffer, maxValue: stats.totalApplications),
-                    to: nodePosition(column: 2, value: stats.interviewingToRejected, maxValue: stats.totalApplications, offset: stats.interviewingToOffer),
-                    toHeight: nodeHeight(value: stats.interviewingToRejected, maxValue: stats.totalApplications),
-                    color: ApplicationStatus.rejected.color,
-                    value: stats.interviewingToRejected,
-                    total: stats.totalApplications
-                )
-            }
-            
-            if stats.interviewingToOffer > 0 {
-                FlowPath(
-                    from: nodePosition(column: 2, value: stats.interviewingToOffer, maxValue: stats.totalApplications),
-                    fromHeight: nodeHeight(value: stats.interviewingToOffer, maxValue: stats.totalApplications),
-                    to: nodePosition(column: 3, value: stats.offerToAccepted, maxValue: stats.totalApplications),
-                    toHeight: nodeHeight(value: stats.offerToAccepted, maxValue: stats.totalApplications),
-                    color: ApplicationStatus.accepted.color,
-                    value: stats.offerToAccepted,
-                    total: stats.totalApplications
-                )
-            }
-            
-            // Draw nodes (on top of flows)
-            FlowNode(
-                title: "Applied",
-                count: stats.totalApplications,
-                color: ApplicationStatus.applied.color,
-                position: nodePosition(column: 0, value: stats.totalApplications, maxValue: stats.totalApplications),
-                height: nodeHeight(value: stats.totalApplications, maxValue: stats.totalApplications)
-            )
-            .environmentObject(themeManager)
-            
-            if stats.appliedToInterviewing > 0 {
-                FlowNode(
-                    title: "Interviewing",
-                    count: stats.appliedToInterviewing,
-                    color: ApplicationStatus.interviewing.color,
-                    position: nodePosition(column: 1, value: stats.appliedToInterviewing, maxValue: stats.totalApplications),
-                    height: nodeHeight(value: stats.appliedToInterviewing, maxValue: stats.totalApplications)
-                )
-                .environmentObject(themeManager)
-            }
-            
-            if stats.interviewingToOffer > 0 {
-                FlowNode(
-                    title: "Offer",
-                    count: stats.interviewingToOffer,
-                    color: ApplicationStatus.offer.color,
-                    position: nodePosition(column: 2, value: stats.interviewingToOffer, maxValue: stats.totalApplications),
-                    height: nodeHeight(value: stats.interviewingToOffer, maxValue: stats.totalApplications)
-                )
-                .environmentObject(themeManager)
-            }
-            
-            if stats.offerToAccepted > 0 {
-                FlowNode(
-                    title: "Accepted",
-                    count: stats.offerToAccepted,
-                    color: ApplicationStatus.accepted.color,
-                    position: nodePosition(column: 3, value: stats.offerToAccepted, maxValue: stats.totalApplications),
-                    height: nodeHeight(value: stats.offerToAccepted, maxValue: stats.totalApplications)
-                )
-                .environmentObject(themeManager)
-            }
-            
-            // Rejected node (bottom)
-            if stats.rejected > 0 {
-                FlowNode(
-                    title: "Rejected",
-                    count: stats.rejected,
-                    color: ApplicationStatus.rejected.color,
-                    position: CGPoint(x: canvasWidth / 2, y: canvasHeight - 100),
-                    height: nodeHeight(value: stats.rejected, maxValue: stats.totalApplications)
-                )
-                .environmentObject(themeManager)
-            }
-            
-            // Statistics summary
+            // Statistics summary - top left
             VStack(alignment: .leading, spacing: 12) {
                 Text("Conversion Funnel")
                     .font(.system(size: 18, weight: .bold))
@@ -310,135 +198,235 @@ struct SankeyDiagram: View {
                     .stroke(ThemeColors.border(for: themeManager.currentTheme), lineWidth: 1)
             )
             .position(x: 150, y: 100)
+            
+            // Draw flows (background layer)
+            if stats.totalApplications > 0 {
+                // Applied to Interviewing and Rejected
+                SankeyFlow(
+                    fromX: 200,
+                    fromY: canvasHeight / 2,
+                    fromHeight: barHeight(value: stats.totalApplications),
+                    toX: 480,
+                    toY: canvasHeight / 2 - 150,
+                    toHeight: barHeight(value: stats.appliedToInterviewing),
+                    color: Color.purple.opacity(0.5)
+                )
+                
+                SankeyFlow(
+                    fromX: 200,
+                    fromY: canvasHeight / 2,
+                    fromHeight: barHeight(value: stats.totalApplications),
+                    toX: 480,
+                    toY: canvasHeight / 2 + 150,
+                    toHeight: barHeight(value: stats.appliedToRejected),
+                    fromOffset: barHeight(value: stats.appliedToInterviewing),
+                    color: Color.red.opacity(0.5)
+                )
+                
+                // Interviewing to Offer and Rejected
+                if stats.appliedToInterviewing > 0 {
+                    SankeyFlow(
+                        fromX: 480,
+                        fromY: canvasHeight / 2 - 150,
+                        fromHeight: barHeight(value: stats.appliedToInterviewing),
+                        toX: 760,
+                        toY: canvasHeight / 2 - 200,
+                        toHeight: barHeight(value: stats.interviewingToOffer),
+                        color: Color.green.opacity(0.5)
+                    )
+                    
+                    SankeyFlow(
+                        fromX: 480,
+                        fromY: canvasHeight / 2 - 150,
+                        fromHeight: barHeight(value: stats.appliedToInterviewing),
+                        toX: 760,
+                        toY: canvasHeight / 2 + 150,
+                        toHeight: barHeight(value: stats.interviewingToRejected),
+                        fromOffset: barHeight(value: stats.interviewingToOffer),
+                        color: Color.red.opacity(0.5)
+                    )
+                }
+                
+                // Offer to Accepted and Rejected
+                if stats.interviewingToOffer > 0 {
+                    SankeyFlow(
+                        fromX: 760,
+                        fromY: canvasHeight / 2 - 200,
+                        fromHeight: barHeight(value: stats.interviewingToOffer),
+                        toX: 1040,
+                        toY: canvasHeight / 2 - 250,
+                        toHeight: barHeight(value: stats.offerToAccepted),
+                        color: Color.blue.opacity(0.5)
+                    )
+                    
+                    if stats.offerToRejected > 0 {
+                        SankeyFlow(
+                            fromX: 760,
+                            fromY: canvasHeight / 2 - 200,
+                            fromHeight: barHeight(value: stats.interviewingToOffer),
+                            toX: 1040,
+                            toY: canvasHeight / 2 + 150,
+                            toHeight: barHeight(value: stats.offerToRejected),
+                            fromOffset: barHeight(value: stats.offerToAccepted),
+                            color: Color.red.opacity(0.5)
+                        )
+                    }
+                }
+            }
+            
+            // Draw stage labels and bars (foreground layer)
+            if stats.totalApplications > 0 {
+                // Applied
+                SankeyBar(
+                    label: "Applied",
+                    count: stats.totalApplications,
+                    height: barHeight(value: stats.totalApplications),
+                    color: Color.blue,
+                    x: 200,
+                    y: canvasHeight / 2
+                )
+                .environmentObject(themeManager)
+                
+                // Interviewing
+                if stats.appliedToInterviewing > 0 {
+                    SankeyBar(
+                        label: "Interviewing",
+                        count: stats.appliedToInterviewing,
+                        height: barHeight(value: stats.appliedToInterviewing),
+                        color: Color.purple,
+                        x: 480,
+                        y: canvasHeight / 2 - 150
+                    )
+                    .environmentObject(themeManager)
+                }
+                
+                // Offer
+                if stats.interviewingToOffer > 0 {
+                    SankeyBar(
+                        label: "Offer",
+                        count: stats.interviewingToOffer,
+                        height: barHeight(value: stats.interviewingToOffer),
+                        color: Color.green,
+                        x: 760,
+                        y: canvasHeight / 2 - 200
+                    )
+                    .environmentObject(themeManager)
+                }
+                
+                // Accepted
+                if stats.offerToAccepted > 0 {
+                    SankeyBar(
+                        label: "Accepted",
+                        count: stats.offerToAccepted,
+                        height: barHeight(value: stats.offerToAccepted),
+                        color: Color.blue,
+                        x: 1040,
+                        y: canvasHeight / 2 - 250
+                    )
+                    .environmentObject(themeManager)
+                }
+                
+                // Rejected (at bottom, accumulated)
+                if stats.rejected > 0 {
+                    SankeyBar(
+                        label: "Rejected",
+                        count: stats.rejected,
+                        height: barHeight(value: stats.rejected),
+                        color: Color.red,
+                        x: 760,
+                        y: canvasHeight / 2 + 150
+                    )
+                    .environmentObject(themeManager)
+                }
+            }
         }
+        .frame(width: canvasWidth, height: canvasHeight)
     }
     
-    private func nodePosition(column: Int, value: Int, maxValue: Int, offset: Int = 0) -> CGPoint {
-        let x = 200 + CGFloat(column) * nodeSpacing
-        let centerY = canvasHeight / 2
-        let offsetY = CGFloat(offset) * (canvasHeight * 0.6 / CGFloat(maxValue))
-        return CGPoint(x: x, y: centerY + offsetY - nodeHeight(value: value, maxValue: maxValue) / 2)
-    }
-    
-    private func nodeHeight(value: Int, maxValue: Int) -> CGFloat {
-        guard maxValue > 0 else { return 60 }
-        let minHeight: CGFloat = 60
-        let maxHeight: CGFloat = canvasHeight * 0.6
-        let ratio = CGFloat(value) / CGFloat(maxValue)
+    private func barHeight(value: Int) -> CGFloat {
+        guard stats.totalApplications > 0 else { return 60 }
+        let maxHeight: CGFloat = 400
+        let minHeight: CGFloat = 40
+        let ratio = CGFloat(value) / CGFloat(stats.totalApplications)
         return max(minHeight, ratio * maxHeight)
     }
 }
 
-struct FlowNode: View {
-    let title: String
+struct SankeyBar: View {
+    let label: String
     let count: Int
-    let color: Color
-    let position: CGPoint
     let height: CGFloat
+    let color: Color
+    let x: CGFloat
+    let y: CGFloat
     @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         VStack(spacing: 8) {
-            Text("\(count)")
-                .font(.system(size: 28, weight: .bold))
-                .foregroundColor(.white)
+            Text(label)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(ThemeColors.textSecondary(for: themeManager.currentTheme))
             
-            Text(title)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.white.opacity(0.9))
+            ZStack {
+                Rectangle()
+                    .fill(color)
+                    .frame(width: 180, height: height)
+                    .cornerRadius(6)
+                
+                Text("\(count)")
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundColor(.white)
+            }
         }
-        .frame(width: 180, height: height)
-        .background(
-            RoundedRectangle(cornerRadius: 8)
-                .fill(color)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(color.opacity(0.5), lineWidth: 2)
-        )
-        .shadow(color: color.opacity(0.3), radius: 12, x: 0, y: 4)
-        .position(position)
+        .position(x: x, y: y)
     }
 }
 
-struct FlowPath: View {
-    let from: CGPoint
+struct SankeyFlow: View {
+    let fromX: CGFloat
+    let fromY: CGFloat
     let fromHeight: CGFloat
-    let fromOffset: CGFloat
-    let to: CGPoint
+    let toX: CGFloat
+    let toY: CGFloat
     let toHeight: CGFloat
+    var fromOffset: CGFloat = 0
     let color: Color
-    let value: Int
-    let total: Int
-    
-    init(from: CGPoint, fromHeight: CGFloat, fromOffset: CGFloat = 0, to: CGPoint, toHeight: CGFloat, color: Color, value: Int, total: Int) {
-        self.from = from
-        self.fromHeight = fromHeight
-        self.fromOffset = fromOffset
-        self.to = to
-        self.toHeight = toHeight
-        self.color = color
-        self.value = value
-        self.total = total
-    }
-    
-    var flowHeight: CGFloat {
-        guard total > 0 else { return 0 }
-        return CGFloat(value) / CGFloat(total) * fromHeight
-    }
     
     var body: some View {
         Path { path in
-            // Start from right edge of source node
-            let startX = from.x + 90
-            let startY = from.y + fromHeight / 2 + fromOffset
+            // Calculate start and end points
+            let startX = fromX + 90 // Right edge of source bar
+            let endX = toX - 90 // Left edge of target bar
             
-            // End at left edge of target node
-            let endX = to.x - 90
-            let endY = to.y + toHeight / 2
+            let startY = fromY + fromOffset
+            let endY = toY
+            
+            let flowHeight = min(fromHeight - fromOffset, toHeight)
             
             // Control points for smooth curve
             let controlX = (startX + endX) / 2
             
             // Top curve
-            path.move(to: CGPoint(x: startX, y: startY - flowHeight / 2))
+            path.move(to: CGPoint(x: startX, y: startY - fromHeight / 2 + fromOffset))
             path.addCurve(
-                to: CGPoint(x: endX, y: endY - flowHeight / 2),
-                control1: CGPoint(x: controlX, y: startY - flowHeight / 2),
-                control2: CGPoint(x: controlX, y: endY - flowHeight / 2)
+                to: CGPoint(x: endX, y: endY - toHeight / 2),
+                control1: CGPoint(x: controlX, y: startY - fromHeight / 2 + fromOffset),
+                control2: CGPoint(x: controlX, y: endY - toHeight / 2)
             )
             
             // Right edge
-            path.addLine(to: CGPoint(x: endX, y: endY + flowHeight / 2))
+            path.addLine(to: CGPoint(x: endX, y: endY - toHeight / 2 + flowHeight))
             
-            // Bottom curve (reverse)
+            // Bottom curve
             path.addCurve(
-                to: CGPoint(x: startX, y: startY + flowHeight / 2),
-                control1: CGPoint(x: controlX, y: endY + flowHeight / 2),
-                control2: CGPoint(x: controlX, y: startY + flowHeight / 2)
+                to: CGPoint(x: startX, y: startY - fromHeight / 2 + fromOffset + flowHeight),
+                control1: CGPoint(x: controlX, y: endY - toHeight / 2 + flowHeight),
+                control2: CGPoint(x: controlX, y: startY - fromHeight / 2 + fromOffset + flowHeight)
             )
             
             path.closeSubpath()
         }
-        .fill(color.opacity(0.4))
-        .overlay(
-            Path { path in
-                let startX = from.x + 90
-                let startY = from.y + fromHeight / 2 + fromOffset
-                let endX = to.x - 90
-                let endY = to.y + toHeight / 2
-                let controlX = (startX + endX) / 2
-                
-                // Top border
-                path.move(to: CGPoint(x: startX, y: startY - flowHeight / 2))
-                path.addCurve(
-                    to: CGPoint(x: endX, y: endY - flowHeight / 2),
-                    control1: CGPoint(x: controlX, y: startY - flowHeight / 2),
-                    control2: CGPoint(x: controlX, y: endY - flowHeight / 2)
-                )
-            }
-            .stroke(color.opacity(0.6), lineWidth: 1)
-        )
+        .fill(color)
     }
 }
 

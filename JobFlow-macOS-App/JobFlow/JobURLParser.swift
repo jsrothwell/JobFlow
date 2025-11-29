@@ -91,8 +91,11 @@ class JobURLParser: ObservableObject {
         var job = JobApplication()
         let host = url.host?.lowercased() ?? ""
         
-        // Save the URL in notes
-        job.notes = "📎 Job Posting: \(url.absoluteString)\n\n"
+        // Save the URL in the url field
+        job.url = url.absoluteString
+        
+        // Save minimal info in notes
+        job.notes = "📎 Saved from job posting\n\n"
         
         // Detect the job board
         var boardName: String?
@@ -151,7 +154,7 @@ class JobURLParser: ObservableObject {
         job.notes += "1. Fill in the job title above\n"
         job.notes += "2. Add salary and location if shown on posting\n"
         job.notes += "3. Copy key details from the job description\n"
-        job.notes += "4. Click the URL anytime to return to the posting!"
+        job.notes += "4. Use 'Import from URL' to auto-fill details!"
         
         // Leave title empty so user fills it in
         job.title = ""
@@ -171,7 +174,125 @@ class JobURLParser: ObservableObject {
         // Default status
         job.status = .applied
         
+        // Not a ghost job by default
+        job.isGhostJob = false
+        
         return job
+    }
+    
+    // New method to import full job details from URL
+    func importJobDetails(from urlString: String) async -> JobApplication? {
+        guard let url = URL(string: urlString) else {
+            return nil
+        }
+        
+        await MainActor.run {
+            isLoading = true
+            errorMessage = nil
+        }
+        
+        // Fetch the webpage content
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            if let html = String(data: data, encoding: .utf8) {
+                let job = parseHTMLForJobDetails(html: html, url: url)
+                
+                await MainActor.run {
+                    isLoading = false
+                    successMessage = "Job details imported successfully!"
+                }
+                
+                return job
+            }
+        } catch {
+            await MainActor.run {
+                isLoading = false
+                errorMessage = "Could not fetch job details. Please fill manually."
+            }
+        }
+        
+        return nil
+    }
+    
+    private func parseHTMLForJobDetails(html: String, url: URL) -> JobApplication {
+        var job = extractJobInfo(from: url)
+        
+        // Simple HTML parsing for common job posting patterns
+        // Extract title
+        if let titleMatch = extractBetween(html, start: "<title>", end: "</title>") {
+            let cleanTitle = titleMatch
+                .replacingOccurrences(of: " - \\w+", with: "", options: .regularExpression)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            if !cleanTitle.isEmpty {
+                job.title = cleanTitle
+            }
+        }
+        
+        // Extract description from common meta tags
+        if let descMatch = extractBetween(html, start: "description\" content=\"", end: "\"") {
+            job.description = descMatch
+                .replacingOccurrences(of: "&quot;", with: "\"")
+                .replacingOccurrences(of: "&amp;", with: "&")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        
+        // Try to extract salary
+        let salaryPatterns = [
+            "\\$[0-9,]+(k|K)?\\s*-\\s*\\$[0-9,]+(k|K)?",
+            "\\$[0-9,]+(k|K)?\\+?",
+            "[0-9,]+\\s*-\\s*[0-9,]+\\s*per\\s*(year|hour|month)"
+        ]
+        
+        for pattern in salaryPatterns {
+            if let range = html.range(of: pattern, options: .regularExpression) {
+                job.salary = String(html[range])
+                break
+            }
+        }
+        
+        return job
+    }
+    
+    private func extractBetween(_ text: String, start: String, end: String) -> String? {
+        guard let startRange = text.range(of: start),
+              let endRange = text[startRange.upperBound...].range(of: end) else {
+            return nil
+        }
+        
+        return String(text[startRange.upperBound..<endRange.lowerBound])
+    }
+    
+    // Submit ghost job to ghostjobs.io
+    func submitGhostJob(_ job: JobApplication) async -> Bool {
+        guard let url = URL(string: "https://ghostjobs.io/api/report") else {
+            return false
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let payload: [String: Any] = [
+            "jobTitle": job.title,
+            "company": job.company,
+            "url": job.url,
+            "datePosted": ISO8601DateFormatter().string(from: job.dateApplied),
+            "location": job.location,
+            "salary": job.salary
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: payload)
+            let (_, response) = try await URLSession.shared.data(for: request)
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                return httpResponse.statusCode == 200 || httpResponse.statusCode == 201
+            }
+        } catch {
+            print("Error submitting ghost job: \(error)")
+        }
+        
+        return false
     }
     
     private func formatCompanyName(_ rawName: String) -> String {

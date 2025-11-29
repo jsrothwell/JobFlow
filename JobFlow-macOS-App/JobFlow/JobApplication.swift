@@ -11,6 +11,8 @@ struct JobApplication: Identifiable, Hashable {
     var salary: String
     var location: String
     var notes: String
+    var url: String
+    var isGhostJob: Bool
     
     var dateString: String {
         let formatter = DateFormatter()
@@ -27,7 +29,9 @@ struct JobApplication: Identifiable, Hashable {
         description: String = "",
         salary: String = "",
         location: String = "",
-        notes: String = ""
+        notes: String = "",
+        url: String = "",
+        isGhostJob: Bool = false
     ) {
         self.title = title
         self.company = company
@@ -37,6 +41,8 @@ struct JobApplication: Identifiable, Hashable {
         self.salary = salary
         self.location = location
         self.notes = notes
+        self.url = url
+        self.isGhostJob = isGhostJob
     }
 }
 
