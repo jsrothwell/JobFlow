@@ -94,11 +94,27 @@ struct KanbanColumn: View {
                     DispatchQueue.main.async {
                         if let index = jobStore.jobs.firstIndex(where: { $0.id == jobId }) {
                             let oldStatus = jobStore.jobs[index].status
-                            let job = jobStore.jobs[index]
                             
                             // Update status
                             jobStore.jobs[index].status = status
                             
+                            // Show toast with undo
+                            jobStore.toastManager.show(
+                                "Moved to \(status.rawValue)",
+                                icon: "arrow.right.circle.fill",
+                                onUndo: {
+                                    if let idx = jobStore.jobs.firstIndex(where: { $0.id == jobId }) {
+                                        jobStore.jobs[idx].status = oldStatus
+                                    }
+                                }
+                            )
+                            
+                            // Add to undo stack
+                            jobStore.performUndoableAction("Move to \(status.rawValue)") {
+                                if let idx = jobStore.jobs.firstIndex(where: { $0.id == jobId }) {
+                                    jobStore.jobs[idx].status = oldStatus
+                                }
+                            }
                         }
                     }
                 }
