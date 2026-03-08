@@ -1,0 +1,502 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		041A734AC10D71D1019F26C4 /* JobDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854C56CB263205ECEB4CFEA1 /* JobDetailView.swift */; };
+		150ECF5A2FEC9D3C00F77514 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D69C80EAA2292AE8479082 /* ShareViewController.swift */; };
+		2C3504BD1D853BAE6831EA15 /* Interview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A753DBD54F6CA6E07F19EE39 /* Interview.swift */; };
+		2C88431BA03B7AC701D80701 /* Interview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A753DBD54F6CA6E07F19EE39 /* Interview.swift */; };
+		2F9C5E9F702064AFFA1E8AB2 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7191FF056E5365CE0CA8C21A /* ThemeManager.swift */; };
+		3146C767B506480BCE19A5A2 /* ToastNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1F22896C0A02EC540E9283 /* ToastNotification.swift */; };
+		41948F6E17B58619B85F195C /* JobfloApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF7891FDA0A19E365146AF9 /* JobfloApp.swift */; };
+		43A0CA01C6FF66F3D0B48BAF /* JobStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C455BB1CA8137403E063DD8 /* JobStore.swift */; };
+		60D2F39DE83E6F3F404DCFD2 /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2799AC85E662027888966B /* ShareView.swift */; };
+		77F4D38EA064320B6FF4E0C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCAAAB7994DA87B2BABC272D /* Assets.xcassets */; };
+		84DC9484AA52F356C7648D37 /* JobApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55C11C89F1897B2B816E64B /* JobApplication.swift */; };
+		8518117C4C3F35E6AF865C09 /* PendingJobWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4BB75554647F92C107DBB2 /* PendingJobWriter.swift */; };
+		9C5F24FDF7C6B6060C243D08 /* JobApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55C11C89F1897B2B816E64B /* JobApplication.swift */; };
+		AFD5B99A51DCC4BB7E14C12C /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D867E90F29E5AEC727EBBD5 /* Contact.swift */; };
+		C54ED38E115452CCF19A1F83 /* JobsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5180EDF396C177497DA96F6F /* JobsListView.swift */; };
+		CC53B7023201FCCB63E54F73 /* JobfloShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 386BA48A6EF26ABD1524B9A8 /* JobfloShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E7500FCCD9B9CA3E1A724D5B /* JobFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8E0AE11615BF2F10F8D7D6 /* JobFlowApp.swift */; };
+		EF2FA9DC4CDFF1E42F0BB8C6 /* AddJobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759361A51D424F34138C8580 /* AddJobView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8DDA340B610B1AC6BA865A7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 812143F79FDF0C8BFA5FEE63 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B99994D30772DD4D374F4E91;
+			remoteInfo = JobfloShareExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5DBAA47DE3CF52102DD11FBB /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CC53B7023201FCCB63E54F73 /* JobfloShareExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2D867E90F29E5AEC727EBBD5 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Contact.swift; path = "../JobFlow-macOS-App/JobFlow/Contact.swift"; sourceTree = "<group>"; };
+		386BA48A6EF26ABD1524B9A8 /* JobfloShareExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = JobfloShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		42F418491C4835DBDA960E56 /* Jobflo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Jobflo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		45D69C80EAA2292AE8479082 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		5180EDF396C177497DA96F6F /* JobsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsListView.swift; sourceTree = "<group>"; };
+		5F2799AC85E662027888966B /* ShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
+		7191FF056E5365CE0CA8C21A /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThemeManager.swift; path = "../JobFlow-macOS-App/JobFlow/ThemeManager.swift"; sourceTree = "<group>"; };
+		759361A51D424F34138C8580 /* AddJobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJobView.swift; sourceTree = "<group>"; };
+		854C56CB263205ECEB4CFEA1 /* JobDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobDetailView.swift; sourceTree = "<group>"; };
+		8C455BB1CA8137403E063DD8 /* JobStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobStore.swift; sourceTree = "<group>"; };
+		9B1F22896C0A02EC540E9283 /* ToastNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ToastNotification.swift; path = "../JobFlow-macOS-App/JobFlow/ToastNotification.swift"; sourceTree = "<group>"; };
+		A753DBD54F6CA6E07F19EE39 /* Interview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Interview.swift; path = "../JobFlow-macOS-App/JobFlow/Interview.swift"; sourceTree = "<group>"; };
+		DAF7891FDA0A19E365146AF9 /* JobfloApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobfloApp.swift; sourceTree = "<group>"; };
+		DB4BB75554647F92C107DBB2 /* PendingJobWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingJobWriter.swift; sourceTree = "<group>"; };
+		EAF491BF1334059F96809F5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		ED8E0AE11615BF2F10F8D7D6 /* JobFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JobFlowApp.swift; path = "../JobFlow-macOS-App/JobFlow/JobFlowApp.swift"; sourceTree = "<group>"; };
+		F55C11C89F1897B2B816E64B /* JobApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JobApplication.swift; path = "../JobFlow-macOS-App/JobFlow/JobApplication.swift"; sourceTree = "<group>"; };
+		FCAAAB7994DA87B2BABC272D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		149C211BF5402B1B30DECF2B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				42F418491C4835DBDA960E56 /* Jobflo.app */,
+				386BA48A6EF26ABD1524B9A8 /* JobfloShareExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7B64B55311B6D8C27649A1B2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2D867E90F29E5AEC727EBBD5 /* Contact.swift */,
+				A753DBD54F6CA6E07F19EE39 /* Interview.swift */,
+				F55C11C89F1897B2B816E64B /* JobApplication.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		AB0E4132B66A66EBD05FCBEB /* Jobflo */ = {
+			isa = PBXGroup;
+			children = (
+				759361A51D424F34138C8580 /* AddJobView.swift */,
+				FCAAAB7994DA87B2BABC272D /* Assets.xcassets */,
+				EAF491BF1334059F96809F5C /* Info.plist */,
+				854C56CB263205ECEB4CFEA1 /* JobDetailView.swift */,
+				DAF7891FDA0A19E365146AF9 /* JobfloApp.swift */,
+				5180EDF396C177497DA96F6F /* JobsListView.swift */,
+				8C455BB1CA8137403E063DD8 /* JobStore.swift */,
+			);
+			path = Jobflo;
+			sourceTree = "<group>";
+		};
+		B010EA9AB734AADF95519AC0 = {
+			isa = PBXGroup;
+			children = (
+				AB0E4132B66A66EBD05FCBEB /* Jobflo */,
+				D3813B064E8531CFDB0BCC67 /* JobfloShareExtension */,
+				D745EEBA32E33A77041C4716 /* Shared */,
+				149C211BF5402B1B30DECF2B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D3813B064E8531CFDB0BCC67 /* JobfloShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				DB4BB75554647F92C107DBB2 /* PendingJobWriter.swift */,
+				5F2799AC85E662027888966B /* ShareView.swift */,
+				45D69C80EAA2292AE8479082 /* ShareViewController.swift */,
+			);
+			path = JobfloShareExtension;
+			sourceTree = "<group>";
+		};
+		D745EEBA32E33A77041C4716 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				ED8E0AE11615BF2F10F8D7D6 /* JobFlowApp.swift */,
+				7191FF056E5365CE0CA8C21A /* ThemeManager.swift */,
+				9B1F22896C0A02EC540E9283 /* ToastNotification.swift */,
+				7B64B55311B6D8C27649A1B2 /* Models */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B49EEC40F134F1F428B70AE5 /* Jobflo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0BE985539E798AEE513281E0 /* Build configuration list for PBXNativeTarget "Jobflo" */;
+			buildPhases = (
+				F8F1A4E18EF6B256D7B33C6B /* Sources */,
+				0EAA4DD635FB3C15446AB9AE /* Resources */,
+				5DBAA47DE3CF52102DD11FBB /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CB1E3A607C30FCE0B5A35D12 /* PBXTargetDependency */,
+			);
+			name = Jobflo;
+			packageProductDependencies = (
+			);
+			productName = Jobflo;
+			productReference = 42F418491C4835DBDA960E56 /* Jobflo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B99994D30772DD4D374F4E91 /* JobfloShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E45967E0440B9849B1B47154 /* Build configuration list for PBXNativeTarget "JobfloShareExtension" */;
+			buildPhases = (
+				A8DF3B825F89A8DACF2C759C /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JobfloShareExtension;
+			packageProductDependencies = (
+			);
+			productName = JobfloShareExtension;
+			productReference = 386BA48A6EF26ABD1524B9A8 /* JobfloShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		812143F79FDF0C8BFA5FEE63 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					B49EEC40F134F1F428B70AE5 = {
+						DevelopmentTeam = Q32VJ268M9;
+					};
+					B99994D30772DD4D374F4E91 = {
+						DevelopmentTeam = Q32VJ268M9;
+					};
+				};
+			};
+			buildConfigurationList = D89BD6F4FA89AF86E67A5470 /* Build configuration list for PBXProject "Jobflo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = B010EA9AB734AADF95519AC0;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 149C211BF5402B1B30DECF2B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B49EEC40F134F1F428B70AE5 /* Jobflo */,
+				B99994D30772DD4D374F4E91 /* JobfloShareExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0EAA4DD635FB3C15446AB9AE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77F4D38EA064320B6FF4E0C2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A8DF3B825F89A8DACF2C759C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C3504BD1D853BAE6831EA15 /* Interview.swift in Sources */,
+				9C5F24FDF7C6B6060C243D08 /* JobApplication.swift in Sources */,
+				8518117C4C3F35E6AF865C09 /* PendingJobWriter.swift in Sources */,
+				60D2F39DE83E6F3F404DCFD2 /* ShareView.swift in Sources */,
+				150ECF5A2FEC9D3C00F77514 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8F1A4E18EF6B256D7B33C6B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF2FA9DC4CDFF1E42F0BB8C6 /* AddJobView.swift in Sources */,
+				AFD5B99A51DCC4BB7E14C12C /* Contact.swift in Sources */,
+				2C88431BA03B7AC701D80701 /* Interview.swift in Sources */,
+				84DC9484AA52F356C7648D37 /* JobApplication.swift in Sources */,
+				041A734AC10D71D1019F26C4 /* JobDetailView.swift in Sources */,
+				E7500FCCD9B9CA3E1A724D5B /* JobFlowApp.swift in Sources */,
+				43A0CA01C6FF66F3D0B48BAF /* JobStore.swift in Sources */,
+				41948F6E17B58619B85F195C /* JobfloApp.swift in Sources */,
+				C54ED38E115452CCF19A1F83 /* JobsListView.swift in Sources */,
+				2F9C5E9F702064AFFA1E8AB2 /* ThemeManager.swift in Sources */,
+				3146C767B506480BCE19A5A2 /* ToastNotification.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CB1E3A607C30FCE0B5A35D12 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B99994D30772DD4D374F4E91 /* JobfloShareExtension */;
+			targetProxy = 8DDA340B610B1AC6BA865A7B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		20AEEEC4E28341B948387F12 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = JobfloShareExtension/JobfloShareExtension.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = JobfloShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jobflow.ios.share;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		20C0D3EB22ABFDC850FBB862 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Q32VJ268M9;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+			};
+			name = Release;
+		};
+		5717F70EB68AF6BADA384560 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Jobflo/Jobflo.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Jobflo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jobflow.ios;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7C98FEFA9F427B5C1548B976 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = JobfloShareExtension/JobfloShareExtension.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = JobfloShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jobflow.ios.share;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		97C36A7AE060BDFC508A4D82 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Jobflo/Jobflo.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Jobflo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jobflow.ios;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C1E455AF47BCC858A9FDCF98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Q32VJ268M9;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0BE985539E798AEE513281E0 /* Build configuration list for PBXNativeTarget "Jobflo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5717F70EB68AF6BADA384560 /* Debug */,
+				97C36A7AE060BDFC508A4D82 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D89BD6F4FA89AF86E67A5470 /* Build configuration list for PBXProject "Jobflo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C1E455AF47BCC858A9FDCF98 /* Debug */,
+				20C0D3EB22ABFDC850FBB862 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E45967E0440B9849B1B47154 /* Build configuration list for PBXNativeTarget "JobfloShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7C98FEFA9F427B5C1548B976 /* Debug */,
+				20AEEEC4E28341B948387F12 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 812143F79FDF0C8BFA5FEE63 /* Project object */;
+}
